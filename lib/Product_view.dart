@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shoppy/model/product.dart';
 
@@ -12,6 +15,10 @@ class ProductView extends StatefulWidget {
 class _ProductViewState extends State<ProductView> {
   TextEditingController _qtyController, _priceController, _totalController;
   Product get product => widget.product;
+  StreamSubscription<DocumentSnapshot> data;
+  final DocumentReference _documentReference =
+      Firestore.instance.document("mydata/dummy");
+
 
   @override
   void initState() {
@@ -19,12 +26,20 @@ class _ProductViewState extends State<ProductView> {
     _qtyController = TextEditingController();
     _priceController = TextEditingController();
     _totalController = TextEditingController();
+
+     data = _documentReference.snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        setState(() {
+          _priceController.text = snapshot.data['egg'];
+        });
+      }
+    });
   }
 
-  Future<void> initialize() async {
-    _priceController.text = product.price.toString();
-    _qtyController.text = product.qty.toString();
-    _totalController.text = (product.qty * product.price).toString();
+   @override
+  void dispose() {
+    data?.cancel();
+    super.dispose();
   }
 
   void updateTotal(String val) {
@@ -34,9 +49,10 @@ class _ProductViewState extends State<ProductView> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: initialize(),
-      builder: (context, _) => Card(
+    _priceController.text = product.price.toString();
+    _qtyController.text = product.qty.toString();
+    _totalController.text = (product.qty * product.price).toString();
+    return Card(
             child: SizedBox(
               height: 90,
               child: ListTile(
@@ -92,7 +108,6 @@ class _ProductViewState extends State<ProductView> {
                     ],
                   )),
             ),
-          ),
     );
   }
 }

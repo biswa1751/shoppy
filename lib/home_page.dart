@@ -23,6 +23,17 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+//
+  int exist(int code){
+    for (int i = 0; i < _products.length; i++) {
+      if(_products[i].barCode == code){
+        return i;
+      }
+    }
+    return null;
+  }
+//
+
   Product check(int code) {
     for (Product product in productData) {
       if (product.barCode == code) {
@@ -38,6 +49,14 @@ class _HomePageState extends State<HomePage> {
       return;
     }
     int mycode = int.parse(code);
+    int index =exist(mycode);
+    if(index!=null){
+      _products[index].qty++;
+      setState(() {
+        
+      });
+      return;
+    }
     Product product = check(mycode);
     if (product != null) {
       _products.add(product);
@@ -66,7 +85,7 @@ class _HomePageState extends State<HomePage> {
                   keyboardType: TextInputType.number,
                   onEditingComplete: () {
                     addProduct(_dataController.text);
-                    print("Hello2");
+                    print("Product added");
                     setState(() {});
                   },
                   onChanged: addProduct,
@@ -87,6 +106,7 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               itemCount: _products.length,
+      
             ),
           )
         ],
