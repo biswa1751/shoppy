@@ -14,17 +14,28 @@ class _HomePageState extends State<HomePage> {
   int productIndex = 1;
   List<Product> _products = <Product>[];
   DocumentReference _documentReference;
+  CollectionReference _ref = Firestore.instance.collection("Products");
   @override
   void initState() {
     super.initState();
     _dataController = TextEditingController();
+    _ref.snapshots().listen((snap) {
+      print("barcode :${snap.documents.last.data['barcode']}");
+     if(existIndex(int.parse(snap.documents.last.data['barcode']))==null)
+     {
+        setState(() {
+         _products.add(check(int.parse(snap.documents.last.data['barcode']))); 
+        });
+     }
+    });
   }
 
   void addData(Product product, int index) {
     _documentReference = Firestore.instance.document("Products/Item$index");
     Map<String, String> data = <String, String>{
       "price": product.price.toString(),
-      "qty": product.qty.toString()
+      "qty": product.qty.toString(),
+      "barcode":product.barCode.toString()
     };
     _documentReference.setData(data).whenComplete(() {
       print("Document $index Added");
@@ -130,7 +141,8 @@ class _HomePageState extends State<HomePage> {
                 return ProductView(
                   product: _products[i],
                   index: i + 1,
-                  documentReference:  Firestore.instance.document("Products/Item${i+1}"),
+                  documentReference:
+                      Firestore.instance.document("Products/Item${i + 1}"),
                 );
               },
               itemCount: _products.length,

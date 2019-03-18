@@ -58,7 +58,8 @@ class _ProductViewState extends State<ProductView> {
   void updateData() {
     Map<String, String> data = <String, String>{
       "qty": _qtyController.text,
-      "price": _priceController.text
+      "price": _priceController.text,
+      "barcode":product.barCode.toString()
     };
     _documentReference.updateData(data).whenComplete(() {
       print("Document Added");
@@ -80,7 +81,6 @@ class _ProductViewState extends State<ProductView> {
       child: SizedBox(
         height: 90,
         child: ListTile(
-          onTap: fetchData,
           leading: Container(
             height: 35,
             width: 40,
