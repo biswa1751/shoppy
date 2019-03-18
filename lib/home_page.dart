@@ -13,10 +13,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController _dataController;
-  int productIndex=1;
+  int productIndex = 1;
   List<Product> _products = <Product>[];
-      DocumentReference _documentReference ;
-      StreamSubscription<DocumentSnapshot> data;
+  DocumentReference _documentReference;
+  StreamSubscription<DocumentSnapshot> data;
   @override
   void initState() {
     super.initState();
@@ -30,28 +30,28 @@ class _HomePageState extends State<HomePage> {
     //   }
     // });
   }
-   void addData(Product product,int index) {
-     _documentReference =
-      Firestore.instance.document("Products/Items$index");
-    Map<String, String> data = <String, String>{"price": product.price.toString(), "qty": product.qty.toString()};
+
+  void addData(Product product, int index) {
+    _documentReference = Firestore.instance.document("Products/Item$index");
+    Map<String, String> data = <String, String>{
+      "price": product.price.toString(),
+      "qty": product.qty.toString()
+    };
     _documentReference.setData(data).whenComplete(() {
       print("Document Added");
     }).catchError((e) => print("Error :$e"));
   }
-  
 
- void deleteData() {
-   _products=<Product>[];
-    for(int i=1;i<=productIndex;i++)
-    {
-        _documentReference =
-      Firestore.instance.document("Products/Items$i");
-    _documentReference.delete().whenComplete(() {
-      print("Document Deleted");
-      setState(() {});
-    }).catchError((e) => debugPrint("Error :$e"));
+  void deleteData() {
+    _products = <Product>[];
+    for (int i = 1; i <= productIndex; i++) {
+      _documentReference = Firestore.instance.document("Products/Item$i");
+      _documentReference.delete().whenComplete(() {
+        print("Document Deleted");
+        setState(() {});
+      }).catchError((e) => debugPrint("Error :$e"));
     }
-     productIndex=1;
+    productIndex = 1;
   }
 
   int exist(int code) {
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
       int index = exist(mycode);
       if (index != null) {
         _products[index].qty++;
-        addData(_products[index], index+1);
+        addData(_products[index], index + 1);
         setState(() {});
         return;
       }
@@ -96,11 +96,13 @@ class _HomePageState extends State<HomePage> {
       setState(() {});
     } catch (e) {}
   }
+
   @override
   void dispose() {
     _dataController?.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,17 +141,17 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, i) {
                 return ProductView(
                   product: _products[i],
+                  index: i+1,
                 );
               },
               itemCount: _products.length,
             ),
-          )
+          ),
         ],
       ),
-      //for deleting from firebase
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.delete),
-        onPressed: () =>deleteData(),
+        onPressed: () => deleteData(),
       ),
     );
   }
