@@ -6,18 +6,19 @@ import 'package:shoppy/model/product.dart';
 class ProductView extends StatefulWidget {
   final Product product;
   final int index;
+  final   DocumentReference documentReference;
 
-  const ProductView({Key key, this.product,this.index}) : super(key: key);
+  const ProductView({Key key, this.product, this.index,this.documentReference}) : super(key: key);
   @override
   _ProductViewState createState() => _ProductViewState();
 }
 
 class _ProductViewState extends State<ProductView> {
-  int get index=>widget.index;
+  int get index => widget.index;
   TextEditingController _qtyController, _priceController, _totalController;
   Product get product => widget.product;
   StreamSubscription<DocumentSnapshot> data;
-   DocumentReference _documentReference ;
+  DocumentReference get _documentReference=>widget.documentReference;
 
   @override
   void initState() {
@@ -26,38 +27,39 @@ class _ProductViewState extends State<ProductView> {
     _priceController = TextEditingController();
     _totalController = TextEditingController();
 
-    // _documentReference.snapshots().listen((snapshot) {
-    //   if (snapshot.exists) {
-    //     setState(() {
-    //       _priceController.text = snapshot.data['price'];
-    //       _qtyController.text=snapshot.data['qty'];
-    //     });
-    //   }
-    // });
+    _documentReference.snapshots().listen((snapshot) {
+      if (snapshot.exists) {
+        fetchData();
+      }
+    });
   }
 
   void updateTotal(String val) {
     _totalController.text =
         (int.parse(_qtyController.text) * double.parse(_priceController.text))
             .toString();
-          updateData();
+    updateData();
   }
 
   void fetchData() {
     _documentReference.get().then((snapshot) {
       print("my snapshot =${snapshot.data}");
       if (snapshot.exists) {
-           print("my snapshot2 =${snapshot.data}");
-         _priceController.text = snapshot.data['price'];
-          _qtyController.text=snapshot.data['qty'];
-      }
-    });
-      _totalController.text =
+        print("my snapshot2 =${snapshot.data}");
+        _priceController.text = snapshot.data['price'];
+        _qtyController.text = snapshot.data['qty'];
+        _totalController.text =
         (int.parse(_qtyController.text) * double.parse(_priceController.text))
             .toString();
+      }
+    });
   }
+
   void updateData() {
-    Map<String, String> data = <String, String>{"qty": _qtyController.text, "price": _priceController.text};
+    Map<String, String> data = <String, String>{
+      "qty": _qtyController.text,
+      "price": _priceController.text
+    };
     _documentReference.updateData(data).whenComplete(() {
       print("Document Added");
     }).catchError((e) => print("Error :$e"));
@@ -73,10 +75,7 @@ class _ProductViewState extends State<ProductView> {
   Widget build(BuildContext context) {
     _priceController.text = product.price.toString();
     _qtyController.text = product.qty.toString();
-    _documentReference =
-      Firestore.instance.document("Products/Item$index");
-      fetchData();
-          _totalController.text = (product.qty * product.price).toString();
+    _totalController.text = (product.qty * product.price).toString();
     return Card(
       child: SizedBox(
         height: 90,
