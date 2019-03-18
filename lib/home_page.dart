@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, i) {
                 return ProductView(
                   product: _products[i],
-                  index: i+1,
+                  index: i + 1,
                 );
               },
               itemCount: _products.length,

@@ -26,7 +26,7 @@ class _ProductViewState extends State<ProductView> {
     _priceController = TextEditingController();
     _totalController = TextEditingController();
 
-    // data = _documentReference.snapshots().listen((snapshot) {
+    // _documentReference.snapshots().listen((snapshot) {
     //   if (snapshot.exists) {
     //     setState(() {
     //       _priceController.text = snapshot.data['price'];
@@ -43,15 +43,19 @@ class _ProductViewState extends State<ProductView> {
           updateData();
   }
 
-  // void fetchData() {
-  //   _documentReference.get().then((snapshot) {
-  //     if (snapshot.exists) {
-  //       setState(() {
-  //         _priceController.text = snapshot.data['apple'];
-  //       });
-  //     }
-  //   });
-  // }
+  void fetchData() {
+    _documentReference.get().then((snapshot) {
+      print("my snapshot =${snapshot.data}");
+      if (snapshot.exists) {
+           print("my snapshot2 =${snapshot.data}");
+         _priceController.text = snapshot.data['price'];
+          _qtyController.text=snapshot.data['qty'];
+      }
+    });
+      _totalController.text =
+        (int.parse(_qtyController.text) * double.parse(_priceController.text))
+            .toString();
+  }
   void updateData() {
     Map<String, String> data = <String, String>{"qty": _qtyController.text, "price": _priceController.text};
     _documentReference.updateData(data).whenComplete(() {
@@ -69,13 +73,15 @@ class _ProductViewState extends State<ProductView> {
   Widget build(BuildContext context) {
     _priceController.text = product.price.toString();
     _qtyController.text = product.qty.toString();
-    _totalController.text = (product.qty * product.price).toString();
     _documentReference =
       Firestore.instance.document("Products/Item$index");
+      fetchData();
+          _totalController.text = (product.qty * product.price).toString();
     return Card(
       child: SizedBox(
         height: 90,
         child: ListTile(
+          onTap: fetchData,
           leading: Container(
             height: 35,
             width: 40,
