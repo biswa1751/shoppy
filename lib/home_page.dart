@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:shoppy/Product_view.dart';
 import 'package:shoppy/data/product_data.dart';
 import 'package:shoppy/model/product.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as Pdf;
+import 'package:printing/printing.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -15,6 +18,7 @@ class _HomePageState extends State<HomePage> {
   List<Product> _products = <Product>[];
   DocumentReference _documentReference;
   CollectionReference _ref = Firestore.instance.collection("Products");
+  List<Pdf.TableRow> _list = <Pdf.TableRow>[];
   @override
   void initState() {
     super.initState();
@@ -34,6 +38,26 @@ class _HomePageState extends State<HomePage> {
         });
       }
     });
+  }
+
+  List<int> buildPdf(PdfPageFormat format) {
+    final PdfDoc pdf = PdfDoc()
+      ..addPage(
+        Pdf.Page(
+          pageFormat: format,
+          build: (Pdf.Context context) {
+            return Pdf.Padding(
+                padding: Pdf.EdgeInsets.all(50),
+                child: Pdf.ConstrainedBox(
+                  constraints: const Pdf.BoxConstraints.expand(),
+                  child: Pdf.Table(
+                      tableWidth: Pdf.TableWidth.max, children: _list),
+                ));
+          },
+        ),
+      );
+    _list = <Pdf.TableRow>[];
+    return pdf.save();
   }
 
   void addData(Product product, int index) {
@@ -145,37 +169,72 @@ class _HomePageState extends State<HomePage> {
               )),
           Flexible(
             flex: 5,
-            child: _products.isEmpty?Center(
+            child: _products.isEmpty
+                ? Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Icon(Icons.shop,color: Colors.green[300],size: 60,),
-                        SizedBox(height: 20,),
-                        Text("Add items in cart",style: TextStyle(
-                          fontSize: 25
-                        ),)
+                        Icon(
+                          Icons.shop,
+                          color: Colors.green[300],
+                          size: 60,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Add items in cart",
+                          style: TextStyle(fontSize: 25),
+                        )
                       ],
                     ),
-                  ):ListView.builder(
-              itemBuilder: (context, i) {                 
-                return ProductView(
-                  product: _products[i],
-                  index: i + 1,
-                  documentReference:
-                      Firestore.instance.document("Products/Item${i + 1}"),
-                );
-              },
-              itemCount: _products.length,
-            ),
+                  )
+                : ListView.builder(
+                    itemBuilder: (context, i) {
+                      return ProductView(
+                        product: _products[i],
+                        index: i + 1,
+                        documentReference: Firestore.instance
+                            .document("Products/Item${i + 1}"),
+                      );
+                    },
+                    itemCount: _products.length,
+                  ),
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.delete),
         onPressed: () {
+          getPrintList();
+          Printing.layoutPdf(onLayout: buildPdf);
           deleteData();
         },
       ),
     );
+  }
+
+  void getPrintList() {
+    double total = 0;
+    _products.forEach((p) => total = total + (p.qty * p.price));
+    _list.add(Pdf.TableRow(children: [
+      Pdf.Text("Name"),
+      Pdf.Text("Qty"),
+      Pdf.Text("Price"),
+      Pdf.Text("Total")
+    ]));
+
+    _products.forEach((p) => _list.add(Pdf.TableRow(children: [
+          Pdf.Text(p.name),
+          Pdf.Text(p.qty.toString()),
+          Pdf.Text(p.price.toString()),
+          Pdf.Text((p.price * p.qty).toString()),
+        ])));
+    _list.add(Pdf.TableRow(children: [
+      Pdf.Text(""),
+      Pdf.Text(""),
+      Pdf.Text("Total : "),
+      Pdf.Text(total.toString()),
+    ]));
   }
 }
