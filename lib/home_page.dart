@@ -18,15 +18,21 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+
     _dataController = TextEditingController();
     _ref.snapshots().listen((snap) {
-      print("barcode :${snap.documents.last.data['barcode']}");
-     if(existIndex(int.parse(snap.documents.last.data['barcode']))==null)
-     {
+      print("barcode :${snap.documents}");
+      if (snap.documents.length == 0) {
+        print("0 length");
         setState(() {
-         _products.add(check(int.parse(snap.documents.last.data['barcode']))); 
+          _products = [];
         });
-     }
+      } else if (existIndex(int.parse(snap.documents.last.data['barcode'])) ==
+          null) {
+        setState(() {
+          _products.add(check(int.parse(snap.documents.last.data['barcode'])));
+        });
+      }
     });
   }
 
@@ -35,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     Map<String, String> data = <String, String>{
       "price": product.price.toString(),
       "qty": product.qty.toString(),
-      "barcode":product.barCode.toString()
+      "barcode": product.barCode.toString()
     };
     _documentReference.setData(data).whenComplete(() {
       print("Document $index Added");
@@ -43,7 +49,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void deleteData() {
-    _products = <Product>[];
+    setState(() {
+      _products = <Product>[];
+    });
     for (int i = 1; i <= productIndex; i++) {
       _documentReference = Firestore.instance.document("Products/Item$i");
       _documentReference.delete().whenComplete(() {
@@ -136,8 +144,20 @@ class _HomePageState extends State<HomePage> {
               )),
           Flexible(
             flex: 5,
-            child: ListView.builder(
+            child: _products.isEmpty?Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(Icons.shop,color: Colors.green[300],size: 60,),
+                        SizedBox(height: 20,),
+                        Text("Add items in cart",style: TextStyle(
+                          fontSize: 25
+                        ),)
+                      ],
+                    ),
+                  ):ListView.builder(
               itemBuilder: (context, i) {
+                  
                 return ProductView(
                   product: _products[i],
                   index: i + 1,
@@ -152,7 +172,9 @@ class _HomePageState extends State<HomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.delete),
-        onPressed: () => deleteData(),
+        onPressed: () {
+          deleteData();
+        },
       ),
     );
   }

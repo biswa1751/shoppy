@@ -45,7 +45,6 @@ class _ProductViewState extends State<ProductView> {
     _documentReference.get().then((snapshot) {
       print("my snapshot =${snapshot.data}");
       if (snapshot.exists) {
-        print("my snapshot2 =${snapshot.data}");
         _priceController.text = snapshot.data['price'];
         _qtyController.text = snapshot.data['qty'];
         _totalController.text =
