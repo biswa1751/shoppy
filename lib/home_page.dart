@@ -107,6 +107,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void dispose() {
     _dataController?.dispose();
+    deleteData();
     super.dispose();
   }
 
@@ -156,8 +157,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ):ListView.builder(
-              itemBuilder: (context, i) {
-                  
+              itemBuilder: (context, i) {                 
                 return ProductView(
                   product: _products[i],
                   index: i + 1,
