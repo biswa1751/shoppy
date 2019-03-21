@@ -28,11 +28,12 @@ class _ProductViewState extends State<ProductView> {
   }
 
   void updateTotal(String val) {
-    try{
-    _totalController.text =
-        (int.parse(_qtyController.text) * double.parse(_priceController.text))
-            .toString();
-    updateData();}catch(e){}
+    try {
+      _totalController.text =
+          (int.parse(_qtyController.text) * double.parse(_priceController.text))
+              .toString();
+      updateData();
+    } catch (e) {}
   }
 
   void updateData() {
@@ -45,34 +46,34 @@ class _ProductViewState extends State<ProductView> {
       print("Document $index Updated");
     }).catchError((e) => print("Error :$e"));
   }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
       stream: _documentReference.snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
-        if(snapshot.data.data != null)
-        {
-        print("snap: ${snapshot.data.data}");
-        _priceController.text = snapshot.data.data['price'];
-        _qtyController.text = snapshot.data.data['qty'];
-        _totalController.text = (int.parse(_qtyController.text) *
-                double.parse(_priceController.text))
-            .toString();
+        if (snapshot.data.data != null) {
+          print("snap: ${snapshot.data.data}");
+          _priceController.text = snapshot.data.data['price'];
+          _qtyController.text = snapshot.data.data['qty'];
+          _totalController.text = (int.parse(_qtyController.text) *
+                  double.parse(_priceController.text))
+              .toString();
         }
         return Card(
           child: SizedBox(
-            height: 90,
+            height: 75,
             child: ListTile(
               leading: Container(
-                height: 35,
-                width: 40,
+                height: 42,
+                width: 45,
                 child: TextField(
                   onChanged: updateTotal,
                   controller: _qtyController,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
-                      border: UnderlineInputBorder(borderSide: BorderSide.none),
+                      border: UnderlineInputBorder(),
                       filled: true,
                       fillColor: Colors.green[100]),
                 ),
@@ -83,8 +84,7 @@ class _ProductViewState extends State<ProductView> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    margin: EdgeInsets.only(bottom: 16.0),
-                    height: 20,
+                    height: 43,
                     width: 80,
                     child: TextField(
                       controller: _priceController,
@@ -100,8 +100,7 @@ class _ProductViewState extends State<ProductView> {
                     width: 30,
                   ),
                   Container(
-                    margin: EdgeInsets.only(bottom: 16.0),
-                    height: 20,
+                    height: 43,
                     width: 100,
                     child: TextField(
                       controller: _totalController,

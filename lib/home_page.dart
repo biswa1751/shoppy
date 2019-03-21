@@ -19,10 +19,11 @@ class _HomePageState extends State<HomePage> {
   DocumentReference _documentReference;
   CollectionReference _ref = Firestore.instance.collection("Products");
   List<Pdf.TableRow> _list = <Pdf.TableRow>[];
+  double total = 0;
   @override
   void initState() {
     super.initState();
-
+    total=0;
     _dataController = TextEditingController();
     _ref.snapshots().listen((snap) {
       print("barcode :${snap.documents}");
@@ -35,6 +36,7 @@ class _HomePageState extends State<HomePage> {
           null) {
         setState(() {
           _products.add(check(int.parse(snap.documents.last.data['barcode'])));
+          calcTotal();
         });
       }
     });
@@ -121,6 +123,7 @@ class _HomePageState extends State<HomePage> {
       Product product = check(mycode);
       if (product != null) {
         _products.add(product);
+        calcTotal();
         addData(product, productIndex);
         productIndex++;
       }
@@ -137,35 +140,60 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    calcTotal();
     return Scaffold(
       appBar: new AppBar(
         title: new Text('Take Order'),
-        centerTitle: true,
       ),
       backgroundColor: Colors.grey[300],
       body: Column(
         children: <Widget>[
           Padding(
-              padding: const EdgeInsets.all(8),
-              child: Container(
-                height: 65,
-                child: TextField(
-                  autofocus: true,
-                  maxLines: null,
-                  controller: _dataController,
-                  keyboardType: TextInputType.number,
-                  onEditingComplete: () {
-                    addProduct(_dataController.text);
-                    print("Product added");
-                    setState(() {});
-                  },
-                  onChanged: addProduct,
-                  style: TextStyle(fontSize: 20),
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Enter Barcode",
-                      labelStyle: TextStyle(fontSize: 25.0)),
-                ),
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    height: 65,
+                    width: 260,
+                    child: TextField(
+                      autofocus: true,
+                      maxLines: null,
+                      controller: _dataController,
+                      keyboardType: TextInputType.number,
+                      onEditingComplete: () {
+                        addProduct(_dataController.text);
+                        print("Product added");
+                        setState(() {});
+                      },
+                      onChanged: addProduct,
+                      style: TextStyle(fontSize: 20),
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "Enter Barcode",
+                          labelStyle: TextStyle(fontSize: 25.0)),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    width: 120,
+                    height: 65,
+                    child: Center(
+                        child: InputDecorator(
+                      child: Text(
+                        "$total",
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(width: 2,color: Colors.green),
+                          ),
+                          labelText: "Total",
+                          labelStyle: TextStyle(fontSize: 25.0)),
+                    )),
+                  )
+                ],
               )),
           Flexible(
             flex: 5,
@@ -213,10 +241,15 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
+  void calcTotal(){
+    total=0;
+      _products.forEach((p) => total = total + (p.qty * p.price)); 
+    setState(() {
+    
+    });
+  }
   void getPrintList() {
-    double total = 0;
-    _products.forEach((p) => total = total + (p.qty * p.price));
+
     _list.add(Pdf.TableRow(children: [
       Pdf.Text("Name"),
       Pdf.Text("Qty"),
@@ -236,5 +269,6 @@ class _HomePageState extends State<HomePage> {
       Pdf.Text("Total : "),
       Pdf.Text(total.toString()),
     ]));
+        total = 0;
   }
 }
