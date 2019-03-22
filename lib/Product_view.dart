@@ -6,8 +6,14 @@ class ProductView extends StatefulWidget {
   final Product product;
   final int index;
   final DocumentReference documentReference;
+  final VoidCallback updateFinalTotal;
 
-  const ProductView({Key key, this.product, this.index, this.documentReference})
+  const ProductView(
+      {Key key,
+      this.product,
+      this.index,
+      this.documentReference,
+      this.updateFinalTotal})
       : super(key: key);
   @override
   _ProductViewState createState() => _ProductViewState();
@@ -25,6 +31,9 @@ class _ProductViewState extends State<ProductView> {
     _qtyController = TextEditingController();
     _priceController = TextEditingController();
     _totalController = TextEditingController();
+    _documentReference.snapshots().listen((snap){
+      widget.updateFinalTotal();
+    });
   }
 
   void updateTotal(String val) {
@@ -42,6 +51,8 @@ class _ProductViewState extends State<ProductView> {
       "price": _priceController.text,
       "barcode": product.barCode.toString()
     };
+    product.qty = int.parse(_qtyController.text);
+    product.price = double.parse(_priceController.text);
     _documentReference.updateData(data).whenComplete(() {
       print("Document $index Updated");
     }).catchError((e) => print("Error :$e"));

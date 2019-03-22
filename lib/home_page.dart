@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:shoppy/Product_view.dart';
-import 'package:shoppy/data/product_data.dart';
-import 'package:shoppy/model/product.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as Pdf;
 import 'package:printing/printing.dart';
+import 'package:shoppy/Product_view.dart';
+import 'package:shoppy/data/product_data.dart';
+import 'package:shoppy/model/product.dart';
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
   TextEditingController _dataController;
   int productIndex = 1;
@@ -23,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    total=0;
+    total = 0;
     _dataController = TextEditingController();
     _ref.snapshots().listen((snap) {
       print("barcode :${snap.documents}");
@@ -131,16 +130,46 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {}
   }
 
+  void calcTotal() {
+    total = 0;
+    _products.forEach((p) => total = total + (p.qty * p.price));
+    print("total :$total");
+    setState(() {
+      
+    });
+  }
+
+  void getPrintList() {
+    _list.add(Pdf.TableRow(children: [
+      Pdf.Text("Name"),
+      Pdf.Text("Qty"),
+      Pdf.Text("Price"),
+      Pdf.Text("Total")
+    ]));
+
+    _products.forEach((p) => _list.add(Pdf.TableRow(children: [
+          Pdf.Text(p.name),
+          Pdf.Text(p.qty.toString()),
+          Pdf.Text(p.price.toString()),
+          Pdf.Text((p.price * p.qty).toString()),
+        ])));
+    _list.add(Pdf.TableRow(children: [
+      Pdf.Text(""),
+      Pdf.Text(""),
+      Pdf.Text("Total : "),
+      Pdf.Text(total.toString()),
+    ]));
+    total = 0;
+  }
+
   @override
   void dispose() {
     _dataController?.dispose();
-    deleteData();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    calcTotal();
     return Scaffold(
       appBar: new AppBar(
         title: new Text('Take Order'),
@@ -187,7 +216,8 @@ class _HomePageState extends State<HomePage> {
                       ),
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(width: 2,color: Colors.green),
+                            borderSide:
+                                BorderSide(width: 2, color: Colors.green),
                           ),
                           labelText: "Total",
                           labelStyle: TextStyle(fontSize: 25.0)),
@@ -224,6 +254,7 @@ class _HomePageState extends State<HomePage> {
                         index: i + 1,
                         documentReference: Firestore.instance
                             .document("Products/Item${i + 1}"),
+                        updateFinalTotal: calcTotal,
                       );
                     },
                     itemCount: _products.length,
@@ -240,35 +271,5 @@ class _HomePageState extends State<HomePage> {
         },
       ),
     );
-  }
-  void calcTotal(){
-    total=0;
-      _products.forEach((p) => total = total + (p.qty * p.price)); 
-    setState(() {
-    
-    });
-  }
-  void getPrintList() {
-
-    _list.add(Pdf.TableRow(children: [
-      Pdf.Text("Name"),
-      Pdf.Text("Qty"),
-      Pdf.Text("Price"),
-      Pdf.Text("Total")
-    ]));
-
-    _products.forEach((p) => _list.add(Pdf.TableRow(children: [
-          Pdf.Text(p.name),
-          Pdf.Text(p.qty.toString()),
-          Pdf.Text(p.price.toString()),
-          Pdf.Text((p.price * p.qty).toString()),
-        ])));
-    _list.add(Pdf.TableRow(children: [
-      Pdf.Text(""),
-      Pdf.Text(""),
-      Pdf.Text("Total : "),
-      Pdf.Text(total.toString()),
-    ]));
-        total = 0;
   }
 }
