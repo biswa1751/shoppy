@@ -60,8 +60,8 @@ class _ProductViewState extends State<ProductView> {
         if (!snapshot.hasData) return CircularProgressIndicator();
         if (snapshot.data.data != null) {
           print("snap: ${snapshot.data.data}");
-          _priceController.text = snapshot.data.data['price'];
-          _qtyController.text = snapshot.data.data['qty'];
+          _priceController.value = TextEditingValue(text:snapshot.data.data['price'],selection: TextSelection.collapsed(offset: snapshot.data.data['price'].length));
+          _qtyController.value = TextEditingValue(text:snapshot.data.data['qty'],selection: TextSelection.collapsed(offset: snapshot.data.data['qty'].length));
           _totalController.text = (int.parse(_qtyController.text) *
                   double.parse(_priceController.text))
               .toString();
