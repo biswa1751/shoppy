@@ -11,6 +11,7 @@ class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 }
+
 class _HomePageState extends State<HomePage> {
   TextEditingController _dataController;
   int productIndex = 1;
@@ -18,13 +19,18 @@ class _HomePageState extends State<HomePage> {
   DocumentReference _documentReference;
   CollectionReference _ref = Firestore.instance.collection("Products");
   List<Pdf.TableRow> _list = <Pdf.TableRow>[];
-  double total = 0;
+  double total;
   @override
   void initState() {
     super.initState();
     total = 0;
     _dataController = TextEditingController();
     _ref.snapshots().listen((snap) {
+      total = 0;
+      snap.documents.forEach((f) => total =
+          total + double.parse(f.data['qty']) * double.parse(f.data['price']));
+      print("Total form server =$total");
+      setState(() {});
       print("barcode :${snap.documents}");
       if (snap.documents.length == 0) {
         print("0 length");
@@ -35,7 +41,6 @@ class _HomePageState extends State<HomePage> {
           null) {
         setState(() {
           _products.add(check(int.parse(snap.documents.last.data['barcode'])));
-          calcTotal();
         });
       }
     });
@@ -122,21 +127,12 @@ class _HomePageState extends State<HomePage> {
       Product product = check(mycode);
       if (product != null) {
         _products.add(product);
-        calcTotal();
+        // calcTotal();
         addData(product, productIndex);
         productIndex++;
       }
       setState(() {});
     } catch (e) {}
-  }
-
-  void calcTotal() {
-    total = 0;
-    _products.forEach((p) => total = total + (p.qty * p.price));
-    print("total :$total");
-    setState(() {
-      
-    });
   }
 
   void getPrintList() {
@@ -249,12 +245,21 @@ class _HomePageState extends State<HomePage> {
                   )
                 : ListView.builder(
                     itemBuilder: (context, i) {
-                      return ProductView(
-                        product: _products[i],
-                        index: i + 1,
-                        documentReference: Firestore.instance
-                            .document("Products/Item${i + 1}"),
-                        updateFinalTotal: calcTotal,
+                      return Dismissible(
+                        key: Key(_products[i].name),
+                        onDismissed: (direction) {
+                          _products.removeAt(i);
+                          Firestore.instance
+                              .document("Products/Item$i")
+                              .delete();
+                          setState(() {});
+                        },
+                        child: ProductView(
+                          product: _products[i],
+                          index: i + 1,
+                          documentReference: Firestore.instance
+                              .document("Products/Item${i + 1}"),
+                        ),
                       );
                     },
                     itemCount: _products.length,
@@ -265,8 +270,8 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.delete),
         onPressed: () {
-          getPrintList();
-          Printing.layoutPdf(onLayout: buildPdf);
+          // getPrintList();
+          // Printing.layoutPdf(onLayout: buildPdf);
           deleteData();
         },
       ),

@@ -6,15 +6,12 @@ class ProductView extends StatefulWidget {
   final Product product;
   final int index;
   final DocumentReference documentReference;
-  final VoidCallback updateFinalTotal;
-
-  const ProductView(
-      {Key key,
-      this.product,
-      this.index,
-      this.documentReference,
-      this.updateFinalTotal})
-      : super(key: key);
+  const ProductView({
+    Key key,
+    this.product,
+    this.index,
+    this.documentReference,
+  }) : super(key: key);
   @override
   _ProductViewState createState() => _ProductViewState();
 }
@@ -31,9 +28,6 @@ class _ProductViewState extends State<ProductView> {
     _qtyController = TextEditingController();
     _priceController = TextEditingController();
     _totalController = TextEditingController();
-    _documentReference.snapshots().listen((snap){
-      widget.updateFinalTotal();
-    });
   }
 
   void updateTotal(String val) {
@@ -71,6 +65,8 @@ class _ProductViewState extends State<ProductView> {
           _totalController.text = (int.parse(_qtyController.text) *
                   double.parse(_priceController.text))
               .toString();
+          product.qty = int.parse(_qtyController.text);
+          product.price = double.parse(_priceController.text);
         }
         return Card(
           child: SizedBox(
@@ -80,6 +76,7 @@ class _ProductViewState extends State<ProductView> {
                 height: 42,
                 width: 45,
                 child: TextField(
+                  autofocus: true,
                   onChanged: updateTotal,
                   controller: _qtyController,
                   keyboardType: TextInputType.numberWithOptions(),
