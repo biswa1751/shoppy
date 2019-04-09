@@ -34,20 +34,6 @@ class _HomePageState extends State<HomePage> {
     }).catchError((e) => print("Error :$e"));
   }
 
-  void deleteData() {
-    setState(() {
-      _products = <Product>[];
-    });
-
-    for (int i = 1; i <= _products.length; i++) {
-      _documentReference = Firestore.instance.document("Products/Item$i");
-      _documentReference.delete().whenComplete(() {
-        print("Document $i Deleted");
-        setState(() {});
-      }).catchError((e) => debugPrint("Error :$e"));
-    }
-  }
-
   int existIndex(int code) {
     for (int i = 0; i < _products.length; i++) {
       if (_products[i].barCode == code) {
@@ -106,21 +92,19 @@ class _HomePageState extends State<HomePage> {
       body: StreamBuilder<QuerySnapshot>(
           stream: _ref.snapshots(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) return CircularProgressIndicator();
+            if (!snapshot.hasData)
+              return Center(child: CircularProgressIndicator());
             if (snapshot.data != null) {
               total = 0;
-              snapshot.data.documents.forEach((f) => total = total +
-                  double.parse(f.data['qty']) * double.parse(f.data['price']));
+              _products = [];
+              snapshot.data.documents.forEach((f) {
+                total = total +
+                    double.parse(f.data['qty']) * double.parse(f.data['price']);
+                    _products.add(check(int.parse(f.data['barcode'])));
+                    _products.last.qty=int.parse(f.data['qty']);
+                    _products.last.price=double.parse(f.data['price']);
+              });
               print("Total form server =$total");
-              if (snapshot.data.documents.length == 0) {
-                print("0 length");
-                _products = [];
-              } else if (existIndex(int.parse(
-                      snapshot.data.documents.last.data['barcode'])) ==
-                  null) {
-                _products.add(check(
-                    int.parse(snapshot.data.documents.last.data['barcode'])));
-              }
               return Column(
                 children: <Widget>[
                   Padding(
@@ -222,7 +206,8 @@ class _HomePageState extends State<HomePage> {
         onPressed: () {
           // getPrintList();
           // Printing.layoutPdf(onLayout: buildPdf);
-          deleteData();
+          _ref.getDocuments().then(
+              (snap) => snap.documents.forEach((s) => s.reference.delete()));
         },
       ),
     );
