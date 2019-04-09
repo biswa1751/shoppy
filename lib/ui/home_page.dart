@@ -11,7 +11,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController _dataController;
-  int productIndex = 1;
   List<Product> _products = [];
   DocumentReference _documentReference;
   CollectionReference _ref = Firestore.instance.collection("Products");
@@ -21,24 +20,6 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     total = 0;
     _dataController = TextEditingController();
-    _ref.snapshots().listen((snap) {
-      total = 0;
-      snap.documents.forEach((f) => total =
-          total + double.parse(f.data['qty']) * double.parse(f.data['price']));
-      print("Total form server =$total");
-      setState(() {});
-      if (snap.documents.length == 0) {
-        print("0 length");
-        setState(() {
-          _products = [];
-        });
-      } else if (existIndex(int.parse(snap.documents.last.data['barcode'])) ==
-          null) {
-        setState(() {
-          _products.add(check(int.parse(snap.documents.last.data['barcode'])));
-        });
-      }
-    });
   }
 
   void addData(Product product, int index) {
@@ -57,15 +38,14 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _products = <Product>[];
     });
-    
-    for (int i = 1; i <= productIndex; i++) {
+
+    for (int i = 1; i <= _products.length; i++) {
       _documentReference = Firestore.instance.document("Products/Item$i");
       _documentReference.delete().whenComplete(() {
         print("Document $i Deleted");
         setState(() {});
       }).catchError((e) => debugPrint("Error :$e"));
     }
-    productIndex = 1;
   }
 
   int existIndex(int code) {
@@ -103,9 +83,7 @@ class _HomePageState extends State<HomePage> {
       Product product = check(mycode);
       if (product != null) {
         _products.add(product);
-        // calcTotal();
-        addData(product, productIndex);
-        productIndex++;
+        addData(product, _products.length);
       }
       setState(() {});
     } catch (e) {}
@@ -125,100 +103,120 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
       ),
       backgroundColor: Colors.grey[300],
-      body: Column(
-        children: <Widget>[
-          Padding(
-              padding: const EdgeInsets.all(10),
-              child: Row(
+      body: StreamBuilder<QuerySnapshot>(
+          stream: _ref.snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return CircularProgressIndicator();
+            if (snapshot.data != null) {
+              total = 0;
+              snapshot.data.documents.forEach((f) => total = total +
+                  double.parse(f.data['qty']) * double.parse(f.data['price']));
+              print("Total form server =$total");
+              if (snapshot.data.documents.length == 0) {
+                print("0 length");
+                _products = [];
+              } else if (existIndex(int.parse(
+                      snapshot.data.documents.last.data['barcode'])) ==
+                  null) {
+                _products.add(check(
+                    int.parse(snapshot.data.documents.last.data['barcode'])));
+              }
+              return Column(
                 children: <Widget>[
-                  Container(
-                    height: 65,
-                    width: 260,
-                    child: TextField(
-                      autofocus: true,
-                      maxLines: null,
-                      controller: _dataController,
-                      keyboardType: TextInputType.number,
-                      onEditingComplete: () {
-                        addProduct(_dataController.text);
-                        print("Product added");
-                        setState(() {});
-                      },
-                      onChanged: addProduct,
-                      style: TextStyle(fontSize: 20),
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: "Enter Barcode",
-                          labelStyle: TextStyle(fontSize: 25.0)),
-                    ),
-                  ),
-                  Container(
-                    width: 120,
-                    height: 65,
-                    margin: EdgeInsets.only(left: 10),
-                    child: Center(
-                        child: InputDecorator(
-                      child: Text(
-                        "$total",
-                        style: TextStyle(fontSize: 20),
-                      ),
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(width: 2, color: Colors.green),
+                  Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                        children: <Widget>[
+                          Container(
+                            height: 65,
+                            width: 260,
+                            child: TextField(
+                              autofocus: true,
+                              maxLines: null,
+                              controller: _dataController,
+                              keyboardType: TextInputType.number,
+                              onEditingComplete: () {
+                                addProduct(_dataController.text);
+                                print("Product added");
+                                setState(() {});
+                              },
+                              onChanged: addProduct,
+                              style: TextStyle(fontSize: 20),
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "Enter Barcode",
+                                  labelStyle: TextStyle(fontSize: 25.0)),
+                            ),
                           ),
-                          labelText: "Total",
-                          labelStyle: TextStyle(fontSize: 25.0)),
-                    )),
-                  )
-                ],
-              )),
-          Flexible(
-            flex: 5,
-            child: _products.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.shop,
-                          color: Colors.green[300],
-                          size: 60,
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          "Add items in cart",
-                          style: TextStyle(fontSize: 25),
-                        )
-                      ],
-                    ),
-                  )
-                : ListView.builder(
-                    itemBuilder: (context, i) {
-                      return Dismissible(
-                        key: Key(_products[i].name),
-                        onDismissed: (direction) {
-                          _products.removeAt(i);
-                          Firestore.instance
-                              .document("Products/Item${i + 1}")
-                              .delete();
-                          setState(() {});
-                        },
-                        child: ProductView(
-                          product: _products[i],
-                          index: i + 1,
-                          documentReference: Firestore.instance
-                              .document("Products/Item${i + 1}"),
-                        ),
-                      );
-                    },
-                    itemCount: _products.length,
+                          Container(
+                            width: 120,
+                            height: 65,
+                            margin: EdgeInsets.only(left: 10),
+                            child: Center(
+                                child: InputDecorator(
+                              child: Text(
+                                "$total",
+                                style: TextStyle(fontSize: 20),
+                              ),
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                        width: 2, color: Colors.green),
+                                  ),
+                                  labelText: "Total",
+                                  labelStyle: TextStyle(fontSize: 25.0)),
+                            )),
+                          )
+                        ],
+                      )),
+                  Flexible(
+                    flex: 5,
+                    child: _products.isEmpty
+                        ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  Icons.shop,
+                                  color: Colors.green[300],
+                                  size: 60,
+                                ),
+                                SizedBox(
+                                  height: 20,
+                                ),
+                                Text(
+                                  "Add items in cart",
+                                  style: TextStyle(fontSize: 25),
+                                )
+                              ],
+                            ),
+                          )
+                        : ListView.builder(
+                            itemBuilder: (context, i) {
+                              return Dismissible(
+                                key: Key(_products[i].name),
+                                onDismissed: (direction) {
+                                  _products.removeAt(i);
+                                  Firestore.instance
+                                      .document("Products/Item${i + 1}")
+                                      .delete();
+                                  setState(() {});
+                                },
+                                child: ProductView(
+                                  product: _products[i],
+                                  index: i + 1,
+                                  documentReference: Firestore.instance
+                                      .document("Products/Item${i + 1}"),
+                                ),
+                              );
+                            },
+                            itemCount: _products.length,
+                          ),
                   ),
-          ),
-        ],
-      ),
+                ],
+              );
+            }
+          }),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.delete),
         onPressed: () {
