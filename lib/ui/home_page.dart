@@ -27,7 +27,8 @@ class _HomePageState extends State<HomePage> {
     Map<String, String> data = <String, String>{
       "price": product.price.toString(),
       "qty": product.qty.toString(),
-      "barcode": product.barCode.toString()
+      "barcode": product.barCode.toString(),
+      "isdone":"false"
     };
     _documentReference.setData(data).whenComplete(() {
       print("Document $index Added");
@@ -104,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                     _products.last.qty=int.parse(f.data['qty']);
                     _products.last.price=double.parse(f.data['price']);
               });
-              print("Total form server =$total");
+              // print("Total form server =$total");
               return Column(
                 children: <Widget>[
                   Padding(

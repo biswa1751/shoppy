@@ -6,12 +6,8 @@ class ProductView extends StatefulWidget {
   final Product product;
   final int index;
   final DocumentReference documentReference;
-  const ProductView({
-    Key key,
-    this.product,
-    this.index,
-    this.documentReference,
-  }) : super(key: key);
+  const ProductView({Key key, this.product, this.index, this.documentReference})
+      : super(key: key);
   @override
   _ProductViewState createState() => _ProductViewState();
 }
@@ -21,16 +17,13 @@ class _ProductViewState extends State<ProductView> {
   TextEditingController _qtyController, _priceController, _totalController;
   Product get product => widget.product;
   DocumentReference get _documentReference => widget.documentReference;
-
+  bool val = false;
   @override
   void initState() {
     super.initState();
     _qtyController = TextEditingController();
     _priceController = TextEditingController();
     _totalController = TextEditingController();
-    _documentReference.snapshots().listen((d){
-      print("test :${d.data}");
-    });
   }
 
   void updateTotal([String val]) {
@@ -46,10 +39,9 @@ class _ProductViewState extends State<ProductView> {
     Map<String, String> data = <String, String>{
       "qty": _qtyController.text,
       "price": _priceController.text,
-      "barcode": product.barCode.toString()
+      "barcode": product.barCode.toString(),
+      "isdone": val.toString()
     };
-    product.qty = int.parse(_qtyController.text);
-    product.price = double.parse(_priceController.text);
     _documentReference.updateData(data).whenComplete(() {
       print("Document $index Updated");
     }).catchError((e) => print("Error :$e"));
@@ -62,14 +54,21 @@ class _ProductViewState extends State<ProductView> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
         if (snapshot.data.data != null) {
-          print("snap: ${snapshot.data.data}");
-          _priceController.value = TextEditingValue(text:snapshot.data.data['price'],selection: TextSelection.collapsed(offset: snapshot.data.data['price'].length));
-          _qtyController.value = TextEditingValue(text:snapshot.data.data['qty'],selection: TextSelection.collapsed(offset: snapshot.data.data['qty'].length));
+          // print("snap: ${snapshot.data.data}");
+          _priceController.value = TextEditingValue(
+              text: snapshot.data.data['price'],
+              selection: TextSelection.collapsed(
+                  offset: snapshot.data.data['price'].length));
+          _qtyController.value = TextEditingValue(
+              text: snapshot.data.data['qty'],
+              selection: TextSelection.collapsed(
+                  offset: snapshot.data.data['qty'].length));
           _totalController.text = (int.parse(_qtyController.text) *
                   double.parse(_priceController.text))
               .toString();
           product.qty = int.parse(_qtyController.text);
           product.price = double.parse(_priceController.text);
+          val = snapshot.data.data['isdone'] == "true" ? true : false;
         }
         return Card(
           child: SizedBox(
@@ -109,10 +108,8 @@ class _ProductViewState extends State<ProductView> {
                           fillColor: Colors.green[100]),
                     ),
                   ),
-                  SizedBox(
-                    width: 30,
-                  ),
                   Container(
+                    margin: EdgeInsets.only(left: 20),
                     height: 43,
                     width: 100,
                     child: TextField(
@@ -124,6 +121,14 @@ class _ProductViewState extends State<ProductView> {
                           fillColor: Colors.blue[100]),
                     ),
                   ),
+                  Checkbox(
+                    value: val,
+                    tristate: false,
+                    onChanged: (v) {
+                      val = v;
+                      updateData();
+                    },
+                  )
                 ],
               ),
             ),
