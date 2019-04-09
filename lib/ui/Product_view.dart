@@ -28,9 +28,12 @@ class _ProductViewState extends State<ProductView> {
     _qtyController = TextEditingController();
     _priceController = TextEditingController();
     _totalController = TextEditingController();
+    _documentReference.snapshots().listen((d){
+      print("test :${d.data}");
+    });
   }
 
-  void updateTotal(String val) {
+  void updateTotal([String val]) {
     try {
       _totalController.text =
           (int.parse(_qtyController.text) * double.parse(_priceController.text))
@@ -79,6 +82,7 @@ class _ProductViewState extends State<ProductView> {
                   autofocus: true,
                   onChanged: updateTotal,
                   controller: _qtyController,
+                  onEditingComplete: updateTotal,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                       border: UnderlineInputBorder(),
@@ -96,7 +100,8 @@ class _ProductViewState extends State<ProductView> {
                     width: 80,
                     child: TextField(
                       controller: _priceController,
-                      onChanged: updateTotal,
+                      onSubmitted: updateTotal,
+                      autofocus: true,
                       keyboardType: TextInputType.numberWithOptions(),
                       decoration: InputDecoration(
                           border: UnderlineInputBorder(),

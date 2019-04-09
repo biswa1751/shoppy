@@ -1,9 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as Pdf;
-import 'package:printing/printing.dart';
-import 'package:shoppy/Product_view.dart';
+import 'package:shoppy/ui/Product_view.dart';
 import 'package:shoppy/data/product_data.dart';
 import 'package:shoppy/model/product.dart';
 
@@ -15,10 +12,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController _dataController;
   int productIndex = 1;
-  List<Product> _products = <Product>[];
+  List<Product> _products = [];
   DocumentReference _documentReference;
   CollectionReference _ref = Firestore.instance.collection("Products");
-  List<Pdf.TableRow> _list = <Pdf.TableRow>[];
   double total;
   @override
   void initState() {
@@ -31,7 +27,6 @@ class _HomePageState extends State<HomePage> {
           total + double.parse(f.data['qty']) * double.parse(f.data['price']));
       print("Total form server =$total");
       setState(() {});
-      print("barcode :${snap.documents}");
       if (snap.documents.length == 0) {
         print("0 length");
         setState(() {
@@ -44,26 +39,6 @@ class _HomePageState extends State<HomePage> {
         });
       }
     });
-  }
-
-  List<int> buildPdf(PdfPageFormat format) {
-    final PdfDoc pdf = PdfDoc()
-      ..addPage(
-        Pdf.Page(
-          pageFormat: format,
-          build: (Pdf.Context context) {
-            return Pdf.Padding(
-                padding: Pdf.EdgeInsets.all(50),
-                child: Pdf.ConstrainedBox(
-                  constraints: const Pdf.BoxConstraints.expand(),
-                  child: Pdf.Table(
-                      tableWidth: Pdf.TableWidth.max, children: _list),
-                ));
-          },
-        ),
-      );
-    _list = <Pdf.TableRow>[];
-    return pdf.save();
   }
 
   void addData(Product product, int index) {
@@ -82,6 +57,7 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _products = <Product>[];
     });
+    
     for (int i = 1; i <= productIndex; i++) {
       _documentReference = Firestore.instance.document("Products/Item$i");
       _documentReference.delete().whenComplete(() {
@@ -135,29 +111,6 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {}
   }
 
-  void getPrintList() {
-    _list.add(Pdf.TableRow(children: [
-      Pdf.Text("Name"),
-      Pdf.Text("Qty"),
-      Pdf.Text("Price"),
-      Pdf.Text("Total")
-    ]));
-
-    _products.forEach((p) => _list.add(Pdf.TableRow(children: [
-          Pdf.Text(p.name),
-          Pdf.Text(p.qty.toString()),
-          Pdf.Text(p.price.toString()),
-          Pdf.Text((p.price * p.qty).toString()),
-        ])));
-    _list.add(Pdf.TableRow(children: [
-      Pdf.Text(""),
-      Pdf.Text(""),
-      Pdf.Text("Total : "),
-      Pdf.Text(total.toString()),
-    ]));
-    total = 0;
-  }
-
   @override
   void dispose() {
     _dataController?.dispose();
@@ -169,6 +122,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: new AppBar(
         title: new Text('Take Order'),
+        centerTitle: true,
       ),
       backgroundColor: Colors.grey[300],
       body: Column(
@@ -198,12 +152,10 @@ class _HomePageState extends State<HomePage> {
                           labelStyle: TextStyle(fontSize: 25.0)),
                     ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
                   Container(
                     width: 120,
                     height: 65,
+                    margin: EdgeInsets.only(left: 10),
                     child: Center(
                         child: InputDecorator(
                       child: Text(
@@ -250,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                         onDismissed: (direction) {
                           _products.removeAt(i);
                           Firestore.instance
-                              .document("Products/Item$i")
+                              .document("Products/Item${i + 1}")
                               .delete();
                           setState(() {});
                         },
