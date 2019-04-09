@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
       "price": product.price.toString(),
       "qty": product.qty.toString(),
       "barcode": product.barCode.toString(),
-      "isdone":"false"
+      "isdone": "false"
     };
     _documentReference.setData(data).whenComplete(() {
       print("Document $index Added");
@@ -101,9 +101,9 @@ class _HomePageState extends State<HomePage> {
               snapshot.data.documents.forEach((f) {
                 total = total +
                     double.parse(f.data['qty']) * double.parse(f.data['price']);
-                    _products.add(check(int.parse(f.data['barcode'])));
-                    _products.last.qty=int.parse(f.data['qty']);
-                    _products.last.price=double.parse(f.data['price']);
+                _products.add(check(int.parse(f.data['barcode'])));
+                _products.last.qty = int.parse(f.data['qty']);
+                _products.last.price = double.parse(f.data['price']);
               });
               // print("Total form server =$total");
               return Column(
@@ -205,10 +205,30 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.delete),
         onPressed: () {
-          // getPrintList();
-          // Printing.layoutPdf(onLayout: buildPdf);
-          _ref.getDocuments().then(
-              (snap) => snap.documents.forEach((s) => s.reference.delete()));
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+                  title: Text("Are u want to confirm"),
+                  actions: <Widget>[
+                    FlatButton(
+                      child: Text("YES"),
+                      onPressed: () {
+                        // getPrintList();
+                        // Printing.layoutPdf(onLayout: buildPdf);
+                        _ref.getDocuments().then((snap) => snap.documents
+                            .forEach((s) => s.reference.delete()));
+                        Navigator.pop(context);
+                      },
+                    ),
+                    FlatButton(
+                        child: Text(
+                          "NO",
+                          style: TextStyle(color: Colors.red),
+                        ),
+                        onPressed: () => Navigator.pop(context))
+                  ],
+                ),
+          );
         },
       ),
     );
