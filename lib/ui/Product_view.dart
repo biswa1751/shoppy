@@ -54,7 +54,6 @@ class _ProductViewState extends State<ProductView> {
       builder: (context, snapshot) {
         if (!snapshot.hasData) return CircularProgressIndicator();
         if (snapshot.data.data != null) {
-          // print("snap: ${snapshot.data.data}");
           _priceController.value = TextEditingValue(
               text: snapshot.data.data['price'],
               selection: TextSelection.collapsed(

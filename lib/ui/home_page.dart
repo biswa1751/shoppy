@@ -22,8 +22,9 @@ class _HomePageState extends State<HomePage> {
     _dataController = TextEditingController();
   }
 
-  void addData(Product product, int index) {
-    _documentReference = Firestore.instance.document("Products/Item$index");
+  void addData(Product product) {
+    _documentReference =
+        Firestore.instance.document("Products/${product.item}");
     Map<String, String> data = <String, String>{
       "price": product.price.toString(),
       "qty": product.qty.toString(),
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
       "isdone": "false"
     };
     _documentReference.setData(data).whenComplete(() {
-      print("Document $index Added");
+      print("Document ${product.item} Added");
     }).catchError((e) => print("Error :$e"));
   }
 
@@ -63,14 +64,15 @@ class _HomePageState extends State<HomePage> {
       int index = existIndex(mycode);
       if (index != null) {
         _products[index].qty++;
-        addData(_products[index], index + 1);
+        addData(_products[index]);
         setState(() {});
         return;
       }
       Product product = check(mycode);
+      product.item = "Item${_products.length + 1}";
       if (product != null) {
         _products.add(product);
-        addData(product, _products.length);
+        addData(product);
       }
       setState(() {});
     } catch (e) {}
@@ -104,8 +106,9 @@ class _HomePageState extends State<HomePage> {
                 _products.add(check(int.parse(f.data['barcode'])));
                 _products.last.qty = int.parse(f.data['qty']);
                 _products.last.price = double.parse(f.data['price']);
+                _products.last.item = f.documentID;
+                print("Product :${_products.last.item}");
               });
-              // print("Total form server =$total");
               return Column(
                 children: <Widget>[
                   Padding(
@@ -181,17 +184,14 @@ class _HomePageState extends State<HomePage> {
                               return Dismissible(
                                 key: Key(_products[i].name),
                                 onDismissed: (direction) {
-                                  _products.removeAt(i);
-                                  Firestore.instance
-                                      .document("Products/Item${i + 1}")
-                                      .delete();
-                                  setState(() {});
+                                   _ref.document(_products[i].item).delete();
                                 },
                                 child: ProductView(
                                   product: _products[i],
                                   index: i + 1,
                                   documentReference: Firestore.instance
-                                      .document("Products/Item${i + 1}"),
+                                      .document(
+                                          "Products/${_products[i].item}"),
                                 ),
                               );
                             },
@@ -221,11 +221,12 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                     FlatButton(
-                        child: Text(
-                          "NO",
-                          style: TextStyle(color: Colors.red),
-                        ),
-                        onPressed: () => Navigator.pop(context))
+                      child: Text(
+                        "NO",
+                        style: TextStyle(color: Colors.red),
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                    )
                   ],
                 ),
           );
