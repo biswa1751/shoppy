@@ -69,7 +69,10 @@ class _HomePageState extends State<HomePage> {
         return;
       }
       Product product = check(mycode);
-      product.item = "Item${_products.length + 1}";
+      if(_products.length==0)
+        product.item = "Item${_products.length + 1}";
+      else
+        product.item="Item${int.parse(_products.last.item[_products.last.item.length-1])+1}";
       if (product != null) {
         _products.add(product);
         addData(product);
