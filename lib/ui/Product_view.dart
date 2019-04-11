@@ -65,8 +65,8 @@ class _ProductViewState extends State<ProductView> {
           _totalController.text = (int.parse(_qtyController.text) *
                   double.parse(_priceController.text))
               .toString();
-          product.qty = int.parse(_qtyController.text);
-          product.price = double.parse(_priceController.text);
+          // product.qty = int.parse(_qtyController.text);
+          // product.price = double.parse(_priceController.text);
           val = snapshot.data.data['isdone'] == "true" ? true : false;
         }
         return Card(
@@ -78,7 +78,7 @@ class _ProductViewState extends State<ProductView> {
                 width: 45,
                 child: TextField(
                   autofocus: true,
-                  onChanged: updateTotal,
+                  onSubmitted: updateTotal,
                   controller: _qtyController,
                   onEditingComplete: updateTotal,
                   keyboardType: TextInputType.numberWithOptions(),

@@ -45,8 +45,8 @@ class _HomePageState extends State<HomePage> {
     return null;
   }
 
-  Product check(int code) {
-    for (Product product in productData) {
+  ProductData check(int code) {
+    for (ProductData product in myProductData) {
       if (product.barCode == code) {
         return product;
       }
@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void addProduct(String code) {
+    print("check $code");
     try {
       if (code.contains("\n")) {
         _dataController.clear();
@@ -62,19 +63,22 @@ class _HomePageState extends State<HomePage> {
       }
       int mycode = int.parse(code);
       int index = existIndex(mycode);
+      print("index $index");
       if (index != null) {
         _products[index].qty++;
         addData(_products[index]);
         setState(() {});
         return;
       }
-      Product product = check(mycode);
+      ProductData myProduct = check(mycode);
+      Product product = Product(barCode: myProduct.barCode,price: myProduct.price,qty: 1,mrp: myProduct.mrp,name: myProduct.name);
+      print("test ${product.price}");
+      print("product ${product.name}");
       if(_products.length==0)
         product.item = "Item${_products.length + 1}";
       else
         product.item="Item${int.parse(_products.last.item[_products.last.item.length-1])+1}";
       if (product != null) {
-        _products.add(product);
         addData(product);
       }
       setState(() {});
@@ -106,7 +110,8 @@ class _HomePageState extends State<HomePage> {
               snapshot.data.documents.forEach((f) {
                 total = total +
                     double.parse(f.data['qty']) * double.parse(f.data['price']);
-                _products.add(check(int.parse(f.data['barcode'])));
+                    ProductData data=check(int.parse(f.data['barcode']));
+                _products.add(Product(barCode: data.barCode,name: data.name,mrp: data.mrp));
                 _products.last.qty = int.parse(f.data['qty']);
                 _products.last.price = double.parse(f.data['price']);
                 _products.last.item = f.documentID;
