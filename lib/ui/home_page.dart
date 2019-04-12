@@ -107,7 +107,10 @@ class _HomePageState extends State<HomePage> {
       drawer: Drawer(
         child: Column(
           children: <Widget>[
-            UserAccountsDrawerHeader(),
+            UserAccountsDrawerHeader(
+              accountName: Text(""),
+              accountEmail: Text(""),
+            ),
             ListTile(
               leading: Icon(Icons.shop),
               title: Text("Catelog",style: TextStyle(fontSize: 20),),

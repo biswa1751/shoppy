@@ -23,4 +23,24 @@ class ProductData {
     this.mrp,
     this.barCode,
   });
+  factory ProductData.fromJson(Map<String,dynamic> json){
+    print(double.parse(json["PRICE"].toString()).runtimeType);
+      return ProductData(
+        barCode: json["BARCODE"].runtimeType==int?json["BARCODE"]:int.parse(json["BARCODE"]),
+        mrp:double.parse(json["PRICE"].toString()),
+        name: json["NAME"],
+        price:double.parse(json["PRICE"].toString())
+      );
+  }
+}
+class ProductDataList{
+  List<ProductData> list;
+  ProductDataList({this.list});
+  factory ProductDataList.fromJSOn(List<dynamic> json){
+    List<ProductData> mylist=List<ProductData>();
+    mylist=json.map((p)=>ProductData.fromJson(p)).toList();
+    return new ProductDataList(
+      list: mylist
+    );
+  }
 }

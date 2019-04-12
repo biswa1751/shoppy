@@ -1,0 +1,52 @@
+[
+  {
+    "BARCODE": 9556437011450,
+    "NAME": "cocon mix jelly",
+    "PRICE": 60
+  },
+  {
+    "BARCODE": 9556437003004,
+    "NAME": "cocon litchi jelly",
+    "PRICE": 60
+  },
+  {
+    "BARCODE": "078895120509",
+    "NAME": "lee kum li teriyaki sauce 250g",
+    "PRICE": 250
+  },
+  {
+    "BARCODE": 8004275059918,
+    "NAME": "Aceto balsamico 500g",
+    "PRICE": 280
+  },
+  {
+    "BARCODE": 613070714250,
+    "NAME": "sarwar olive oil",
+    "PRICE": 720
+  },
+  {
+    "BARCODE": "078895300024",
+    "NAME": "panda oyster sauce",
+    "PRICE": 12
+  },
+  {
+    "BARCODE": 8888118150211,
+    "NAME": "woh hup dark soy sauce",
+    "PRICE": 210
+  },
+  {
+    "BARCODE": 8888118200954,
+    "NAME": "woh hub sesame seed  oil",
+    "PRICE": 700
+  },
+  {
+    "BARCODE": "0761856646759",
+    "NAME": "ghost pepper sauce",
+    "PRICE": 225
+  },
+  {
+    "BARCODE": 5000111041188,
+    "NAME": "worcestershire sauce",
+    "PRICE": 160
+  }
+]
