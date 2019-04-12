@@ -12,7 +12,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   TextEditingController _dataController;
   List<Product> _products = [];
-  DocumentReference _documentReference;
   CollectionReference _ref = Firestore.instance.collection("Products");
   double total;
   @override
@@ -23,15 +22,13 @@ class _HomePageState extends State<HomePage> {
   }
 
   void addData(Product product) {
-    _documentReference =
-        Firestore.instance.document("Products/${product.item}");
     Map<String, String> data = <String, String>{
       "price": product.price.toString(),
       "qty": product.qty.toString(),
       "barcode": product.barCode.toString(),
       "isdone": "false"
     };
-    _documentReference.setData(data).whenComplete(() {
+     _ref.document(product.item).setData(data).whenComplete(() {
       print("Document ${product.item} Added");
     }).catchError((e) => print("Error :$e"));
   }
@@ -71,13 +68,19 @@ class _HomePageState extends State<HomePage> {
         return;
       }
       ProductData myProduct = check(mycode);
-      Product product = Product(barCode: myProduct.barCode,price: myProduct.price,qty: 1,mrp: myProduct.mrp,name: myProduct.name);
+      Product product = Product(
+          barCode: myProduct.barCode,
+          price: myProduct.price,
+          qty: 1,
+          mrp: myProduct.mrp,
+          name: myProduct.name);
       print("test ${product.price}");
       print("product ${product.name}");
-      if(_products.length==0)
+      if (_products.length == 0)
         product.item = "Item${_products.length + 1}";
       else
-        product.item="Item${int.parse(_products.last.item[_products.last.item.length-1])+1}";
+        product.item =
+            "Item${int.parse(_products.last.item[_products.last.item.length - 1]) + 1}";
       if (product != null) {
         addData(product);
       }
@@ -110,12 +113,12 @@ class _HomePageState extends State<HomePage> {
               snapshot.data.documents.forEach((f) {
                 total = total +
                     double.parse(f.data['qty']) * double.parse(f.data['price']);
-                    ProductData data=check(int.parse(f.data['barcode']));
-                _products.add(Product(barCode: data.barCode,name: data.name,mrp: data.mrp));
+                ProductData data = check(int.parse(f.data['barcode']));
+                _products.add(Product(
+                    barCode: data.barCode, name: data.name, mrp: data.mrp));
                 _products.last.qty = int.parse(f.data['qty']);
                 _products.last.price = double.parse(f.data['price']);
                 _products.last.item = f.documentID;
-                print("Product :${_products.last.item}");
               });
               return Column(
                 children: <Widget>[
@@ -133,8 +136,6 @@ class _HomePageState extends State<HomePage> {
                               keyboardType: TextInputType.number,
                               onEditingComplete: () {
                                 addProduct(_dataController.text);
-                                print("Product added");
-                                setState(() {});
                               },
                               onChanged: addProduct,
                               style: TextStyle(fontSize: 20),
@@ -192,14 +193,13 @@ class _HomePageState extends State<HomePage> {
                               return Dismissible(
                                 key: Key(_products[i].name),
                                 onDismissed: (direction) {
-                                   _ref.document(_products[i].item).delete();
+                                  _ref.document(_products[i].item).delete();
                                 },
                                 child: ProductView(
                                   product: _products[i],
                                   index: i + 1,
-                                  documentReference: Firestore.instance
-                                      .document(
-                                          "Products/${_products[i].item}"),
+                                  documentReference:
+                                      _ref.document(_products[i].item),
                                 ),
                               );
                             },

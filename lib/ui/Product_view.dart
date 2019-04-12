@@ -6,8 +6,12 @@ class ProductView extends StatefulWidget {
   final Product product;
   final int index;
   final DocumentReference documentReference;
-  const ProductView({Key key, this.product, this.index, this.documentReference})
-      : super(key: key);
+  const ProductView({
+    Key key,
+    this.product,
+    this.index,
+    this.documentReference,
+  }) : super(key: key);
   @override
   _ProductViewState createState() => _ProductViewState();
 }
@@ -65,8 +69,6 @@ class _ProductViewState extends State<ProductView> {
           _totalController.text = (int.parse(_qtyController.text) *
                   double.parse(_priceController.text))
               .toString();
-          // product.qty = int.parse(_qtyController.text);
-          // product.price = double.parse(_priceController.text);
           val = snapshot.data.data['isdone'] == "true" ? true : false;
         }
         return Card(

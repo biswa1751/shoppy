@@ -16,5 +16,10 @@ class ProductData {
   double price;
   double mrp;
   int barCode;
-  ProductData({this.name, this.price, this.mrp, this.barCode});
+  ProductData({
+    this.name,
+    this.price,
+    this.mrp,
+    this.barCode,
+  });
 }
