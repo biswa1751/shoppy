@@ -82,7 +82,6 @@ class _ProductViewState extends State<ProductView> {
                   autofocus: true,
                   onSubmitted: updateTotal,
                   controller: _qtyController,
-                  onEditingComplete: updateTotal,
                   keyboardType: TextInputType.numberWithOptions(),
                   decoration: InputDecoration(
                       border: UnderlineInputBorder(),

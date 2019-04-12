@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shoppy/ui/Product_view.dart';
 import 'package:shoppy/data/product_data.dart';
 import 'package:shoppy/model/product.dart';
+import 'package:shoppy/ui/catalog.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -102,6 +103,20 @@ class _HomePageState extends State<HomePage> {
       appBar: new AppBar(
         title: new Text('Take Order'),
         centerTitle: true,
+      ),
+      drawer: Drawer(
+        child: Column(
+          children: <Widget>[
+            UserAccountsDrawerHeader(),
+            ListTile(
+              leading: Icon(Icons.shop),
+              title: Text("Catelog",style: TextStyle(fontSize: 20),),
+              onTap: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CataLog()));
+              },
+            )
+          ],
+        ),
       ),
       backgroundColor: Colors.grey[300],
       body: StreamBuilder<QuerySnapshot>(
