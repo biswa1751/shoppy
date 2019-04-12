@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       "price": product.price.toString(),
       "qty": product.qty.toString(),
       "barcode": product.barCode.toString(),
-      "isdone": "false"
+      "isdone": product.isDone.toString()
     };
      _ref.document(product.item).setData(data).whenComplete(() {
       print("Document ${product.item} Added");
@@ -73,7 +73,9 @@ class _HomePageState extends State<HomePage> {
           price: myProduct.price,
           qty: 1,
           mrp: myProduct.mrp,
-          name: myProduct.name);
+          name: myProduct.name,
+          isDone: false
+          );
       print("test ${product.price}");
       print("product ${product.name}");
       if (_products.length == 0)
@@ -118,6 +120,7 @@ class _HomePageState extends State<HomePage> {
                     barCode: data.barCode, name: data.name, mrp: data.mrp));
                 _products.last.qty = int.parse(f.data['qty']);
                 _products.last.price = double.parse(f.data['price']);
+                _products.last.isDone=f.data['isdone'] == "true" ? true : false;
                 _products.last.item = f.documentID;
               });
               return Column(

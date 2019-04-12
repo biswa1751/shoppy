@@ -1,8 +1,9 @@
 class Product extends ProductData {
   String item;
   int qty;
+  bool isDone;
   Product(
-      {String name, double price, this.qty, double mrp, int barCode, this.item})
+      {String name, double price, this.qty, double mrp, int barCode, this.item,this.isDone})
       : super(
           name: name,
           price: price,
