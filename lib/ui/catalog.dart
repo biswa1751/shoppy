@@ -1,5 +1,5 @@
 import 'dart:convert';
-
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shoppy/model/product.dart';
 
@@ -15,15 +15,19 @@ class _CataLogState extends State<CataLog> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("CateLog"),
+        title: Text(path??"CateLog"),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.search),
-        onPressed: () {
-          showSearch(
-            context: context,
-            delegate: MyDelegate(productData),
-          );
+        onPressed: () async{
+          // showSearch(
+          //   context: context,
+          //   delegate: MyDelegate(productData),
+          // );
+          path=await FilePicker.getFilePath(type: FileType.ANY);
+          setState(() {
+            
+          });
         },
       ),
       body: FutureBuilder(
