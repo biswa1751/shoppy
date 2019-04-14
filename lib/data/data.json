@@ -27,7 +27,7 @@
   {
     "BARCODE": "078895300024",
     "NAME": "panda oyster sauce",
-    "PRICE": 12
+    "PRICE": 250
   },
   {
     "BARCODE": 8888118150211,
@@ -48,5 +48,760 @@
     "BARCODE": 5000111041188,
     "NAME": "worcestershire sauce",
     "PRICE": 160
+  },
+  {
+    "BARCODE": 8850206011025,
+    "NAME": "thin soy sauce",
+    "PRICE": 319
+  },
+  {
+    "BARCODE": "011210000872",
+    "NAME": "tabasco pepper sauce 60ml",
+    "PRICE": 199
+  },
+  {
+    "BARCODE": 5000111047661,
+    "NAME": "hp sauce",
+    "PRICE": 260
+  },
+  {
+    "BARCODE": "085696608044",
+    "NAME": "tofu 350g",
+    "PRICE": 240
+  },
+  {
+    "BARCODE": "078895700015",
+    "NAME": "hoisin sauce 240g",
+    "PRICE": 375
+  },
+  {
+    "BARCODE": "078895122565",
+    "NAME": "plum sauce 260g",
+    "PRICE": 450
+  },
+  {
+    "BARCODE": "011210009387",
+    "NAME": "tabasco green pepper sauce",
+    "PRICE": 199
+  },
+  {
+    "BARCODE": 3335121134189,
+    "NAME": "covinor moutarde",
+    "PRICE": 335
+  },
+  {
+    "BARCODE": 8906047522340,
+    "NAME": "disano olive oil 500ml",
+    "PRICE": 675
+  },
+  {
+    "BARCODE": 8906047522364,
+    "NAME": "disano olive pomace oil 500ml",
+    "PRICE": 450
+  },
+  {
+    "BARCODE": 4006067060977,
+    "NAME": "davidoff espresso 57 intense 100g",
+    "PRICE": 550
+  },
+  {
+    "BARCODE": 4006067084225,
+    "NAME": "davidoff rich aroma 100g",
+    "PRICE": 550
+  },
+  {
+    "BARCODE": 7613035267473,
+    "NAME": "nescafe gold 200g",
+    "PRICE": 810
+  },
+  {
+    "BARCODE": 4006067084300,
+    "NAME": "davidoff fine aroma 100g",
+    "PRICE": 550
+  },
+  {
+    "BARCODE": 5601001324109,
+    "NAME": "nescafe gold rico & square 100g",
+    "PRICE": 475
+  },
+  {
+    "BARCODE": 8906083910644,
+    "NAME": "eppys soyabean sauce",
+    "PRICE": 60
+  },
+  {
+    "BARCODE": 8906083910514,
+    "NAME": "eppys chilli sauce",
+    "PRICE": 60
+  },
+  {
+    "BARCODE": 8906083910057,
+    "NAME": "mor vinegar",
+    "PRICE": 45
+  },
+  {
+    "BARCODE": 8906083910446,
+    "NAME": "eppys lime juice cordial",
+    "PRICE": 90
+  },
+  {
+    "BARCODE": 8906083910545,
+    "NAME": "eppys lemon squash",
+    "PRICE": 90
+  },
+  {
+    "BARCODE": 8906083910453,
+    "NAME": "eppys pineaplle squash",
+    "PRICE": 85
+  },
+  {
+    "BARCODE": 8906083910569,
+    "NAME": "eppys pineapple squash",
+    "PRICE": 85
+  },
+  {
+    "BARCODE": 8906083910613,
+    "NAME": "eppys mustard kasundhi",
+    "PRICE": 60
+  },
+  {
+    "BARCODE": 3052911219139,
+    "NAME": "Monin peach syrup",
+    "PRICE": 1000
+  },
+  {
+    "BARCODE": 3052911219184,
+    "NAME": "Monin Mojito mint",
+    "PRICE": 1000
+  },
+  {
+    "BARCODE": 3052911219771,
+    "NAME": "Monin Mojito Vanilla",
+    "PRICE": 1000
+  },
+  {
+    "BARCODE": 3052911219733,
+    "NAME": "Monin Watermelon",
+    "PRICE": 1000
+  },
+  {
+    "BARCODE": 3052910522032,
+    "NAME": "Monin Strawberry syrup",
+    "PRICE": 1000
+  },
+  {
+    "BARCODE": 3052911220500,
+    "NAME": "Monin Green Apple",
+    "PRICE": 1000
+  },
+  {
+    "BARCODE": 3052911219849,
+    "NAME": "Monin Blue Curaco",
+    "PRICE": 1000
+  },
+  {
+    "BARCODE": 8853602001379,
+    "NAME": "Rice Vermicilli",
+    "PRICE": 45
+  },
+  {
+    "BARCODE": 8855815002457,
+    "NAME": "Tiger Glass noodles",
+    "PRICE": 120
+  },
+  {
+    "BARCODE": 8850521950344,
+    "NAME": "Rice Stick 5mm 500g",
+    "PRICE": 200
+  },
+  {
+    "BARCODE": 8858135051013,
+    "NAME": "Rice paper",
+    "PRICE": 155
+  },
+  {
+    "BARCODE": 8888118190941,
+    "NAME": "Wo hup Spicy black bean sauce",
+    "PRICE": 220
+  },
+  {
+    "BARCODE": 8888118160289,
+    "NAME": "Wo hup plum sauce",
+    "PRICE": 220
+  },
+  {
+    "BARCODE": "0717273501782",
+    "NAME": "AG Apple cider vinegar",
+    "PRICE": 165
+  },
+  {
+    "BARCODE": 8906007830997,
+    "NAME": "Habit apple cider vinegar",
+    "PRICE": 160
+  },
+  {
+    "BARCODE": 8906007831253,
+    "NAME": "Habit cheese powder 1kg",
+    "PRICE": 900
+  },
+  {
+    "BARCODE": 8906051682221,
+    "NAME": "Morde white compound",
+    "PRICE": 125
+  },
+  {
+    "BARCODE": 8991001780140,
+    "NAME": "Twister 45gm",
+    "PRICE": 80
+  },
+  {
+    "BARCODE": 8852047216379,
+    "NAME": "123 za cola",
+    "PRICE": 150
+  },
+  {
+    "BARCODE": 6936474600245,
+    "NAME": "T-3 Passion",
+    "PRICE": 60
+  },
+  {
+    "BARCODE": 6970430210888,
+    "NAME": "T-2 forever",
+    "PRICE": 40
+  },
+  {
+    "BARCODE": 6936474600238,
+    "NAME": "T-5 only twin heart",
+    "PRICE": 200
+  },
+  {
+    "BARCODE": 8850305320264,
+    "NAME": "Gold Coin Tub",
+    "PRICE": 200
+  },
+  {
+    "BARCODE": 8850305320394,
+    "NAME": "Silver Coin Tub",
+    "PRICE": 200
+  },
+  {
+    "BARCODE": 8850305320288,
+    "NAME": "Jinny ball",
+    "PRICE": 200
+  },
+  {
+    "BARCODE": 8850305320257,
+    "NAME": "Gold Coin Stick",
+    "PRICE": 90
+  },
+  {
+    "BARCODE": 6936474600528,
+    "NAME": "T-5 Passion",
+    "PRICE": 120
+  },
+  {
+    "BARCODE": 6936474600030,
+    "NAME": "T-8 Passion",
+    "PRICE": 150
+  },
+  {
+    "BARCODE": 8908006330157,
+    "NAME": "Kokoleka heart",
+    "PRICE": 150
+  },
+  {
+    "BARCODE": 6936474600429,
+    "NAME": "T-8 Only Circle",
+    "PRICE": 150
+  },
+  {
+    "BARCODE": 6936474600702,
+    "NAME": "T-16 only box",
+    "PRICE": 250
+  },
+  {
+    "BARCODE": 6936474600696,
+    "NAME": "T-12 Only Bucket",
+    "PRICE": 250
+  },
+  {
+    "BARCODE": 8000500037874,
+    "NAME": "T-16 Ferrero Rocher",
+    "PRICE": 499
+  },
+  {
+    "BARCODE": 8000500126936,
+    "NAME": "T-4 Ferrero Rocher",
+    "PRICE": 140
+  },
+  {
+    "BARCODE": 80050278,
+    "NAME": "T-3 Ferrero Rocher",
+    "PRICE": 99
+  },
+  {
+    "BARCODE": 8906004131882,
+    "NAME": "Sanpac 72 Foil",
+    "PRICE": 300
+  },
+  {
+    "BARCODE": 8906004131912,
+    "NAME": "Sanpac 30 Foil",
+    "PRICE": 80
+  },
+  {
+    "BARCODE": 8908004316061,
+    "NAME": "Hakka Chow",
+    "PRICE": 48
+  },
+  {
+    "BARCODE": 8906010301576,
+    "NAME": "Triple Treat",
+    "PRICE": 160
+  },
+  {
+    "BARCODE": 8908000845435,
+    "NAME": "Mobile Muri",
+    "PRICE": 10
+  },
+  {
+    "BARCODE": 8906063040163,
+    "NAME": "Chaal Bhaja",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 8906063040316,
+    "NAME": "Soya Stick",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 8906063040323,
+    "NAME": "Diet Chirwa",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 8906063040156,
+    "NAME": "Corn Triangle",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 8906063040255,
+    "NAME": "Corn Pasta",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 80176800,
+    "NAME": "Nutella Choc Spread 750g",
+    "PRICE": 749
+  },
+  {
+    "BARCODE": 8901071706834,
+    "NAME": "Hershey Chocolate Syrup",
+    "PRICE": 200
+  },
+  {
+    "BARCODE": 8901071731126,
+    "NAME": "Hershey Strawberry Small",
+    "PRICE": 90
+  },
+  {
+    "BARCODE": 8901071211307,
+    "NAME": "Hershey Chocolate Small",
+    "PRICE": 90
+  },
+  {
+    "BARCODE": 8906083910958,
+    "NAME": "Eppys Lemonii",
+    "PRICE": 45
+  },
+  {
+    "BARCODE": 8906083910491,
+    "NAME": "Eppys Capshico",
+    "PRICE": 40
+  },
+  {
+    "BARCODE": 8693029607330,
+    "NAME": "Fodante 500g",
+    "PRICE": 300
+  },
+  {
+    "BARCODE": 8690351115090,
+    "NAME": "Only 500g",
+    "PRICE": 300
+  },
+  {
+    "BARCODE": 8693029702431,
+    "NAME": "Truffle 500g",
+    "PRICE": 300
+  },
+  {
+    "BARCODE": 8690351114802,
+    "NAME": "Only 1kg",
+    "PRICE": 600
+  },
+  {
+    "BARCODE": 8693029204782,
+    "NAME": "Truffle 1kg",
+    "PRICE": 600
+  },
+  {
+    "BARCODE": 8852047237114,
+    "NAME": "Tommy",
+    "PRICE": 20
+  },
+  {
+    "BARCODE": 8901071701372,
+    "NAME": "Hershey Spread",
+    "PRICE": 260
+  },
+  {
+    "BARCODE": 8901071701341,
+    "NAME": "Hershey Syrup Pouch",
+    "PRICE": 200
+  },
+  {
+    "BARCODE": 10062020020342,
+    "NAME": "Nutella Choc Spread 350g",
+    "PRICE": 400
+  },
+  {
+    "BARCODE": 90162602,
+    "NAME": "Redbull",
+    "PRICE": 99
+  },
+  {
+    "BARCODE": 8901246002952,
+    "NAME": "Peach Delmonte",
+    "PRICE": 40
+  },
+  {
+    "BARCODE": 8901246001719,
+    "NAME": "Pineapple Delmonte",
+    "PRICE": 40
+  },
+  {
+    "BARCODE": 8901246001443,
+    "NAME": "Green Appple Delmonte",
+    "PRICE": 40
+  },
+  {
+    "BARCODE": 8901246001696,
+    "NAME": "4 seasons Delmonte",
+    "PRICE": 40
+  },
+  {
+    "BARCODE": 8992952950583,
+    "NAME": "Cho Cho Surprise",
+    "PRICE": 250
+  },
+  {
+    "BARCODE": 8992952924331,
+    "NAME": "Cho Cho small",
+    "PRICE": 130
+  },
+  {
+    "BARCODE": 9556995120953,
+    "NAME": "Sapphire Choco Cookie",
+    "PRICE": 275
+  },
+  {
+    "BARCODE": 8693029300644,
+    "NAME": "Princh",
+    "PRICE": 20
+  },
+  {
+    "BARCODE": 8903361330033,
+    "NAME": "Safari",
+    "PRICE": 10
+  },
+  {
+    "BARCODE": 8693029300590,
+    "NAME": "Express",
+    "PRICE": 30
+  },
+  {
+    "BARCODE": 8691707095318,
+    "NAME": "VIP",
+    "PRICE": 20
+  },
+  {
+    "BARCODE": 742893195752,
+    "NAME": "Gofresh",
+    "PRICE": 20
+  },
+  {
+    "BARCODE": 6936474600153,
+    "NAME": "T-20 Only Rectangle Colored",
+    "PRICE": 300
+  },
+  {
+    "BARCODE": 6936474600177,
+    "NAME": "T-16 Only Heart",
+    "PRICE": 250
+  },
+  {
+    "BARCODE": 8901262090315,
+    "NAME": "Amulya Dairy Whitener 1kg",
+    "PRICE": 365
+  },
+  {
+    "BARCODE": 8901262090322,
+    "NAME": "Amulya Dairy Whitener 500gm",
+    "PRICE": 190
+  },
+  {
+    "BARCODE": 8901120143771,
+    "NAME": "Sugar Free Gold 30g",
+    "PRICE": 170
+  },
+  {
+    "BARCODE": 89906007830508,
+    "NAME": "Habit Coconut Cream Powder 1kg",
+    "PRICE": 700
+  },
+  {
+    "BARCODE": 8853602001379,
+    "NAME": "Star Lion Brand Rice Vermicelli 200g",
+    "PRICE": 65
+  },
+  {
+    "BARCODE": 8855815002457,
+    "NAME": "Tiger Brand Tanhun Bean Threads",
+    "PRICE": 110
+  },
+  {
+    "BARCODE": 8906043391414,
+    "NAME": "Wonder Food Active Dry Yeast 50g",
+    "PRICE": 60
+  },
+  {
+    "BARCODE": 1118634381170,
+    "NAME": "KR Classic Drinking Chocolate 1kg",
+    "PRICE": 600
+  },
+  {
+    "BARCODE": 8906051682207,
+    "NAME": "Morde Dark Compound(CO D15) 400g",
+    "PRICE": 85
+  },
+  {
+    "BARCODE": 8906051682214,
+    "NAME": "Morde Milk Compound(CO M21) 400g",
+    "PRICE": 100
+  },
+  {
+    "BARCODE": 6221007044512,
+    "NAME": "Maggi  Chicken Stock 24 Tablets",
+    "PRICE": 328
+  },
+  {
+    "BARCODE": 8901207025389,
+    "NAME": "Dabur Honey 1.2kg",
+    "PRICE": 395
+  },
+  {
+    "BARCODE": 8901207028113,
+    "NAME": "Dabur Honey 600g",
+    "PRICE": 199
+  },
+  {
+    "BARCODE": 8901207025365,
+    "NAME": "Dabur Honey 300g",
+    "PRICE": 110
+  },
+  {
+    "BARCODE": 8901207005374,
+    "NAME": "Dabur Honey 130g",
+    "PRICE": 49
+  },
+  {
+    "BARCODE": 8850030111922,
+    "NAME": "Lobo Chinese Five-Spice Blend 65g",
+    "PRICE": 178
+  },
+  {
+    "BARCODE": 8901207900648,
+    "NAME": "Dabur Chyawanprash 1kg",
+    "PRICE": 305
+  },
+  {
+    "BARCODE": 8901207900631,
+    "NAME": "Dabur Chyawanprash 575g",
+    "PRICE": 165
+  },
+  {
+    "BARCODE": 8906028780028,
+    "NAME": "Chamria Karoprati Goli 200g",
+    "PRICE": 100
+  },
+  {
+    "BARCODE": 8906028781124,
+    "NAME": "Chamria Mangola 200g",
+    "PRICE": 100
+  },
+  {
+    "BARCODE": 8901246005373,
+    "NAME": "Delmonte Tomato Ketchup 950g",
+    "PRICE": 125
+  },
+  {
+    "BARCODE": 8906079460474,
+    "NAME": "Neo sliced red jalapeno",
+    "PRICE": 150
+  },
+  {
+    "BARCODE": 8906063040156,
+    "NAME": "My Snacks Corn Triangle",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 8906063040323,
+    "NAME": "My Snacks Diet Chidwa",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 8906063040163,
+    "NAME": "My Snacks Chaal Bhaja",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 8906063040316,
+    "NAME": "My Snacks Soya Stick",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 8906063040255,
+    "NAME": "My Snacks Corn Pasta",
+    "PRICE": 50
+  },
+  {
+    "BARCODE": 8904004000245,
+    "NAME": "Fun Cheese Balls",
+    "PRICE": 40
+  },
+  {
+    "BARCODE": 8908000845435,
+    "NAME": "Swissyum Mobile Muri",
+    "PRICE": 10
+  },
+  {
+    "BARCODE": 8850487037158,
+    "NAME": "Maepranom Sweet Chilli Sauce 390g",
+    "PRICE": 130
+  },
+  {
+    "BARCODE": 8908000284548,
+    "NAME": "Neo Baby Gherkin",
+    "PRICE": 115
+  },
+  {
+    "BARCODE": 8906079460481,
+    "NAME": "Neo mixed jalapeno",
+    "PRICE": 150
+  },
+  {
+    "BARCODE": 8906007831390,
+    "NAME": "Habit Silver skin olives",
+    "PRICE": 140
+  },
+  {
+    "BARCODE": 8908000284395,
+    "NAME": "Neo Silver skin olives",
+    "PRICE": 140
+  },
+  {
+    "BARCODE": 8906007831239,
+    "NAME": "Habit Sliced Jalapeno",
+    "PRICE": 140
+  },
+  {
+    "BARCODE": 4710298120712,
+    "NAME": "Jellico Pudding",
+    "PRICE": 120
+  },
+  {
+    "BARCODE": 9556437006647,
+    "NAME": "Tropical Fruit Flavoured Pudding",
+    "PRICE": 90
+  },
+  {
+    "BARCODE": 9556437003646,
+    "NAME": "Yogo Ice Jelly",
+    "PRICE": 80
+  },
+  {
+    "BARCODE": 8695504166776,
+    "NAME": "Elvan Fondante Mint 1kg",
+    "PRICE": 600
+  },
+  {
+    "BARCODE": 8695504164789,
+    "NAME": "Elvan Fondante Caramel 1kg",
+    "PRICE": 600
+  },
+  {
+    "BARCODE": 8992952950491,
+    "NAME": "Cho cho dalia chocolate cheese",
+    "PRICE": 360
+  },
+  {
+    "BARCODE": 8992952953089,
+    "NAME": "Cho cho dalia vanilla",
+    "PRICE": 360
+  },
+  {
+    "BARCODE": 8992952953058,
+    "NAME": "Cho cho dalia strawberry",
+    "PRICE": 360
+  },
+  {
+    "BARCODE": 8992952951078,
+    "NAME": "Cho cho dalia chocolate",
+    "PRICE": 360
+  },
+  {
+    "BARCODE": 8992952924478,
+    "NAME": "Cho cho dalia chocolate strawberry",
+    "PRICE": 360
+  },
+  {
+    "BARCODE": 8992952924676,
+    "NAME": "Cho cho dalia chocolate vanilla",
+    "PRICE": 360
+  },
+  {
+    "BARCODE": 8992952924652,
+    "NAME": "Cho cho dalia chocolate rice",
+    "PRICE": 360
+  },
+  {
+    "BARCODE": 8992952954758,
+    "NAME": "Cho cho dalia cookies and cream",
+    "PRICE": 360
+  },
+  {
+    "BARCODE": 8906098020383,
+    "NAME": "Twister 2kg coconut",
+    "PRICE": 700
+  },
+  {
+    "BARCODE": 8906098020390,
+    "NAME": "Twister 2kg Orange",
+    "PRICE": 700
+  },
+  {
+    "BARCODE": 8906098020796,
+    "NAME": "Twister 2kg Mango",
+    "PRICE": 700
+  },
+  {
+    "BARCODE": 8906098020352,
+    "NAME": "Twister 2kg Hazelnut",
+    "PRICE": 700
+  },
+  {
+    "BARCODE": 8906098020376,
+    "NAME": "Twister 2kg Strawberry",
+    "PRICE": 700
   }
 ]
