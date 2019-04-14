@@ -1,8 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:shoppy/ui/Product_view.dart';
-import 'package:shoppy/data/product_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoppy/model/product.dart';
+import 'package:shoppy/ui/Product_view.dart';
 import 'package:shoppy/ui/catalog.dart';
 
 class HomePage extends StatefulWidget {
@@ -14,12 +18,32 @@ class _HomePageState extends State<HomePage> {
   TextEditingController _dataController;
   List<Product> _products = [];
   CollectionReference _ref = Firestore.instance.collection("Products");
+  List<ProductData> myProductData = [];
+  String path;
   double total;
   @override
   void initState() {
     super.initState();
     total = 0;
     _dataController = TextEditingController();
+    getPath();
+  }
+
+  Future<void> getPath() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    if (path == null) path = pref.getString("path");
+    if (path != null) {
+      pref.setString("path", path);
+      read();
+      setState(() {});
+    }
+  }
+
+  void read() async {
+    File file = File(path);
+    String ss = await file.readAsString();
+    var jsonResponse = json.decode(ss);
+    myProductData = ProductDataList.fromJSOn(jsonResponse).list;
   }
 
   void addData(Product product) {
@@ -29,7 +53,7 @@ class _HomePageState extends State<HomePage> {
       "barcode": product.barCode.toString(),
       "isdone": product.isDone.toString()
     };
-     _ref.document(product.item).setData(data).whenComplete(() {
+    _ref.document(product.item).setData(data).whenComplete(() {
       print("Document ${product.item} Added");
     }).catchError((e) => print("Error :$e"));
   }
@@ -75,8 +99,7 @@ class _HomePageState extends State<HomePage> {
           qty: 1,
           mrp: myProduct.mrp,
           name: myProduct.name,
-          isDone: false
-          );
+          isDone: false);
       print("test ${product.price}");
       print("product ${product.name}");
       if (_products.length == 0)
@@ -113,9 +136,15 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               leading: Icon(Icons.shop),
-              title: Text("Catelog",style: TextStyle(fontSize: 20),),
-              onTap: (){
-                Navigator.of(context).push(MaterialPageRoute(builder: (context)=>CataLog()));
+              title: Text(
+                "Catelog",
+                style: TextStyle(fontSize: 20),
+              ),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => CataLog(
+                          productData: myProductData,
+                        )));
               },
             )
           ],
@@ -138,7 +167,8 @@ class _HomePageState extends State<HomePage> {
                     barCode: data.barCode, name: data.name, mrp: data.mrp));
                 _products.last.qty = int.parse(f.data['qty']);
                 _products.last.price = double.parse(f.data['price']);
-                _products.last.isDone=f.data['isdone'] == "true" ? true : false;
+                _products.last.isDone =
+                    f.data['isdone'] == "true" ? true : false;
                 _products.last.item = f.documentID;
               });
               return Column(
@@ -191,24 +221,40 @@ class _HomePageState extends State<HomePage> {
                     flex: 5,
                     child: _products.isEmpty
                         ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.shop,
-                                  color: Colors.green[300],
-                                  size: 60,
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                Text(
-                                  "Add items in cart",
-                                  style: TextStyle(fontSize: 25),
-                                )
-                              ],
-                            ),
-                          )
+                            child: path != null
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.shop,
+                                        color: Colors.green[300],
+                                        size: 60,
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      Text(
+                                        "Add items in cart",
+                                        style: TextStyle(fontSize: 25),
+                                      )
+                                    ],
+                                  )
+                                : Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    children: <Widget>[
+                                      Text("Select CSV file"),
+                                      RaisedButton(
+                                        onPressed: () async {
+                                          path = await FilePicker.getFilePath(
+                                              type: FileType.ANY);
+                                          getPath();
+                                          setState(() {});
+                                        },
+                                        child: Text("SELECT"),
+                                      ),
+                                    ],
+                                  ))
                         : ListView.builder(
                             itemBuilder: (context, i) {
                               return Dismissible(
@@ -247,6 +293,7 @@ class _HomePageState extends State<HomePage> {
                         _ref.getDocuments().then((snap) => snap.documents
                             .forEach((s) => s.reference.delete()));
                         Navigator.pop(context);
+                        _dataController.clear();
                       },
                     ),
                     FlatButton(
