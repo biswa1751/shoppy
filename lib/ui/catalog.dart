@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shoppy/model/product.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shoppy/ui/search_page.dart';
 
 class CataLog extends StatefulWidget {
   @override
@@ -13,19 +14,14 @@ class CataLog extends StatefulWidget {
 class _CataLogState extends State<CataLog> {
   List<ProductData> productData = [];
   String path;
-  @override
-  void initState() {
-    super.initState();
-  }
-
   Future<void> getPath() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     if (path == null) path = pref.getString("path");
     if (path != null) {
       pref.setString("path", path);
       read();
+      setState(() {});
     }
-    ;
   }
 
   void read() async {
@@ -46,7 +42,7 @@ class _CataLogState extends State<CataLog> {
           onPressed: () async {
             showSearch(
               context: context,
-              delegate: MyDelegate(productData),
+              delegate: SearchPage(productData),
             );
           },
         ),
@@ -57,7 +53,7 @@ class _CataLogState extends State<CataLog> {
                   child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    Text(path ?? "Select csv file"),
+                    Text("Select CSV file"),
                     RaisedButton(
                       onPressed: () async {
                         path = await FilePicker.getFilePath(type: FileType.ANY);
@@ -89,60 +85,5 @@ class _CataLogState extends State<CataLog> {
                       .toList(),
                 ),
         ));
-  }
-}
-
-class MyDelegate extends SearchDelegate {
-  final List<ProductData> productData;
-
-  MyDelegate(this.productData);
-
-  @override
-  List<Widget> buildActions(BuildContext context) {
-    return [IconButton(icon: Icon(Icons.close), onPressed: () => query = "")];
-  }
-
-  @override
-  Widget buildLeading(BuildContext context) {
-    return IconButton(
-      icon: AnimatedIcon(
-        icon: AnimatedIcons.menu_arrow,
-        progress: this.transitionAnimation,
-      ),
-      onPressed: () => Navigator.pop(context),
-    );
-  }
-
-  @override
-  Widget buildResults(BuildContext context) {
-    return Center(
-      child: Card(
-        color: Colors.green,
-        child: Container(
-          height: 300,
-          width: 300,
-          child: Text(query),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget buildSuggestions(BuildContext context) {
-    var suggestionList = query.isEmpty
-        ? productData
-        : productData.where((p) => p.name.contains(query)).toList();
-
-    return ListView.builder(
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(suggestionList[index].name),
-          onTap: () {
-            showResults(context);
-          },
-        );
-      },
-      itemCount: suggestionList.length,
-    );
   }
 }
