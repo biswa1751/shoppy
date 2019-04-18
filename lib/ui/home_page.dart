@@ -141,10 +141,13 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(fontSize: 20),
               ),
               onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).push(
+                  MaterialPageRoute(
                     builder: (context) => CataLog(
                           productData: myProductData,
-                        )));
+                        ),
+                  ),
+                );
               },
             )
           ],
@@ -177,43 +180,47 @@ class _HomePageState extends State<HomePage> {
                       padding: const EdgeInsets.all(10),
                       child: Row(
                         children: <Widget>[
-                          Container(
-                            height: 65,
-                            width: 260,
-                            child: TextField(
-                              autofocus: true,
-                              maxLines: null,
-                              controller: _dataController,
-                              keyboardType: TextInputType.number,
-                              onEditingComplete: () {
-                                addProduct(_dataController.text);
-                              },
-                              onChanged: addProduct,
-                              style: TextStyle(fontSize: 20),
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: "Enter Barcode",
-                                  labelStyle: TextStyle(fontSize: 25.0)),
+                          Flexible(
+                            flex: 2,
+                            child: Container(
+                              height: 65,
+                              child: TextField(
+                                autofocus: true,
+                                maxLines: null,
+                                controller: _dataController,
+                                keyboardType: TextInputType.number,
+                                onEditingComplete: () {
+                                  addProduct(_dataController.text);
+                                },
+                                onChanged: addProduct,
+                                style: TextStyle(fontSize: 20),
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(),
+                                    labelText: "Enter Barcode",
+                                    labelStyle: TextStyle(fontSize: 25.0)),
+                              ),
                             ),
                           ),
-                          Container(
-                            width: 120,
-                            height: 65,
-                            margin: EdgeInsets.only(left: 10),
-                            child: Center(
-                                child: InputDecorator(
-                              child: Text(
-                                "$total",
-                                style: TextStyle(fontSize: 20),
-                              ),
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 2, color: Colors.green),
-                                  ),
-                                  labelText: "Total",
-                                  labelStyle: TextStyle(fontSize: 25.0)),
-                            )),
+                          Flexible(
+                            flex: 1,
+                            child: Container(
+                              height: 65,
+                              margin: EdgeInsets.only(left: 10),
+                              child: Center(
+                                  child: InputDecorator(
+                                child: Text(
+                                  "$total",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 2, color: Colors.green),
+                                    ),
+                                    labelText: "Total",
+                                    labelStyle: TextStyle(fontSize: 25.0)),
+                              )),
+                            ),
                           )
                         ],
                       )),

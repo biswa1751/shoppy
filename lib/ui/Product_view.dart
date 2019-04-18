@@ -72,68 +72,74 @@ class _ProductViewState extends State<ProductView> {
           val = snapshot.data.data['isdone'] == "true" ? true : false;
         }
         return Card(
-          child: SizedBox(
-            height: 75,
-            child: ListTile(
-              leading: Container(
-                height: 42,
-                width: 45,
-                child: TextField(
-                  autofocus: true,
-                  onSubmitted: updateTotal,
-                  controller: _qtyController,
-                  keyboardType: TextInputType.numberWithOptions(),
-                  decoration: InputDecoration(
-                      border: UnderlineInputBorder(),
-                      filled: true,
-                      fillColor: Colors.green[100]),
+            child: Column(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(product.name),
+            ),
+            SizedBox(
+              height: 75,
+              child: ListTile(
+                leading: Container(
+                  height: 42,
+                  width: 45,
+                  child: TextField(
+                    autofocus: true,
+                    onSubmitted: updateTotal,
+                    controller: _qtyController,
+                    keyboardType: TextInputType.numberWithOptions(),
+                    decoration: InputDecoration(
+                        border: UnderlineInputBorder(),
+                        filled: true,
+                        fillColor: Colors.green[100]),
+                  ),
+                ),
+                subtitle: Text("MRP:${product.mrp.toString()}"),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      height: 43,
+                      width: 80,
+                      child: TextField(
+                        controller: _priceController,
+                        onSubmitted: updateTotal,
+                        autofocus: true,
+                        keyboardType: TextInputType.numberWithOptions(),
+                        decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.green[100]),
+                      ),
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20),
+                      height: 43,
+                      width: 100,
+                      child: TextField(
+                        controller: _totalController,
+                        keyboardType: TextInputType.numberWithOptions(),
+                        decoration: InputDecoration(
+                            border: UnderlineInputBorder(),
+                            filled: true,
+                            fillColor: Colors.blue[100]),
+                      ),
+                    ),
+                    Checkbox(
+                      value: val,
+                      tristate: false,
+                      onChanged: (v) {
+                        val = v;
+                        updateData();
+                      },
+                    )
+                  ],
                 ),
               ),
-              title: Text(product.name),
-              subtitle: Text("${product.mrp.toString()}"),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    height: 43,
-                    width: 80,
-                    child: TextField(
-                      controller: _priceController,
-                      onSubmitted: updateTotal,
-                      autofocus: true,
-                      keyboardType: TextInputType.numberWithOptions(),
-                      decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.green[100]),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: 20),
-                    height: 43,
-                    width: 100,
-                    child: TextField(
-                      controller: _totalController,
-                      keyboardType: TextInputType.numberWithOptions(),
-                      decoration: InputDecoration(
-                          border: UnderlineInputBorder(),
-                          filled: true,
-                          fillColor: Colors.blue[100]),
-                    ),
-                  ),
-                  Checkbox(
-                    value: val,
-                    tristate: false,
-                    onChanged: (v) {
-                      val = v;
-                      updateData();
-                    },
-                  )
-                ],
-              ),
             ),
-          ),
-        );
+          ],
+        ));
       },
     );
   }
