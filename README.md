@@ -6,5 +6,3 @@ Shoppy helps small businesses to bill and make invoices 3x faster by leveraging 
 ![Preview](https://www.pngkey.com/png/full/187-1878320_google-lance-flutter-beta-3-son-application-mobile.png)
 
 ![Preview](https://firebase.google.com/downloads/brand-guidelines/PNG/logo-standard.png)
-
-
